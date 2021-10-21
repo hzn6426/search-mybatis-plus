@@ -2,7 +2,7 @@
 
 ## 项目介绍
 search-mybatis-plus 是一款查询辅助工具包，以编程的方式模拟SQL语言进行数据查询，无缝集成Mybatis-plus，具有以下功能：
-- 模拟SQL，以lambda方式进行构建SQL查询,直接构建查询，无需再写xml文件
+- 模拟SQL,以lambda方式进行构建SQL查询,直接构建查询，无需再写xml文件
 - select中支持Max,Min,Avg等聚合函数,CaseWhen等子句,自定义函数
 - 支持连表查询(left join/inner join/right join/cross join)
 - 支持where多条件构造查询，支持构建自定义函数
