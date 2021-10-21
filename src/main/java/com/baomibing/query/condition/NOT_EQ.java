@@ -20,7 +20,7 @@ import com.baomibing.query.select.Field;
 import com.baomibing.query.select.SQLFunction;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 /**
- * SQL not equal condition(<> or !=)
+ * SQL not equal condition
  * 
  * @author zening
  * @since 1.0.0
