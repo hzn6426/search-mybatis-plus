@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
  * Inner join relation
  * 
  * @author zening
- * @data 2021-10-20 13:34:17
+ * @date 2021-10-20 13:34:17
  * @since 1.0.0
  */
 public class InnerJoin extends Relation {

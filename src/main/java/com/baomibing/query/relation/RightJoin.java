@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
  * Right join relation
  * 
  * @author zening
- * @data 2021-10-20 13:34:42
+ * @date 2021-10-20 13:34:42
  * @since 1.0.0
  */
 public class RightJoin extends Relation {

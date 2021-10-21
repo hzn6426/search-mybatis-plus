@@ -22,7 +22,7 @@ import com.baomibing.query.constant.Strings;
  * SQL not exists condition
  * 
  * @author zening
- * @data 2021-10-20 11:37:27
+ * @date 2021-10-20 11:37:27
  * @since 1.0.0
  */
 public class NOT_EXISTS extends ACondition {

@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
  * SQL min function
  * 
  * @author zening
- * @data 2021-10-20 13:37:38
+ * @date 2021-10-20 13:37:38
  * @since 1.0.0
  */
 public class MIN extends SQLFunction {

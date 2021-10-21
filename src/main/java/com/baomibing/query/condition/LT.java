@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL less than condition
  * 
  * @author zening
- * @data 2021-10-20 11:36:08
+ * @date 2021-10-20 11:36:08
  * @since 1.0.0
  */
 public class LT extends ACondition {

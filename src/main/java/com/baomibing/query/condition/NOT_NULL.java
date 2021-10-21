@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL is not null condition
  * 
  * @author zening
- * @data 2021-10-20 11:37:59
+ * @date 2021-10-20 11:37:59
  * @since 1.0.0
  */
 public class NOT_NULL extends ACondition {

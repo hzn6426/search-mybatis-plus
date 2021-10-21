@@ -42,7 +42,7 @@ import com.google.common.collect.ImmutableList;
  * Intercepter for handling result data
  * 
  * @author zening
- * @data 2021-10-20 13:31:57
+ * @date 2021-10-20 13:31:57
  * @since 1.0.0
  */
 @Intercepts({ @Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,

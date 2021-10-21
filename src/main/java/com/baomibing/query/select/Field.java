@@ -22,7 +22,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL select field(table column)
  * 
  * @author zening
- * @data 2021-10-20 13:36:08
+ * @date 2021-10-20 13:36:08
  * @since 1.0.0
  */
 public class Field<T> extends FieldPart implements Type<T> {

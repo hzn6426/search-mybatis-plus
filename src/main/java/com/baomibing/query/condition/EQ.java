@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL equal condition
  * <P> Note: some database maybe case-sensitive
  * @author zening
- * @data 2021-10-20 11:25:49
+ * @date 2021-10-20 11:25:49
  * @since 1.0.0
  */
 public class EQ extends ACondition {

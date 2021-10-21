@@ -18,7 +18,7 @@ package com.baomibing.query.constant;
  * String common used constant
  * 
  * @author zening
- * @data 2021-10-20 11:41:51
+ * @date 2021-10-20 11:41:51
  * @since 1.0.0
  */
 public abstract class Strings {

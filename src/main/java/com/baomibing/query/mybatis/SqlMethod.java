@@ -6,7 +6,7 @@ package com.baomibing.query.mybatis;
  * 
  *
  * @author frog
- * @data Oct 18, 2021 2:05:57 PM
+ * @date Oct 18, 2021 2:05:57 PM
  * @since 1.0.0
  */
 public enum SqlMethod {

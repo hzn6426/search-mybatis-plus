@@ -34,7 +34,7 @@ import com.google.common.collect.Lists;
  * Common SQL Query 
  * 
  * @author zening
- * @data 2021-10-20 13:45:13
+ * @date 2021-10-20 13:45:13
  * @since 1.0.0
  */
 public class SQLQuery extends QueryerSQL implements IQuery {

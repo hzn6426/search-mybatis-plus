@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL like condition(like 'xxx%')
  * 
  * @author zening
- * @data 2021-10-20 11:38:38
+ * @date 2021-10-20 11:38:38
  * @since 1.0.0
  */
 public class RLIKE extends ACondition {

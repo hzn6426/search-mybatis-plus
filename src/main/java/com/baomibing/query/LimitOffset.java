@@ -21,7 +21,7 @@ import com.baomibing.query.helper.InnerHelper;
  * SQL limit offset part
  * 
  * @author zening
- * @data 2021-10-20 13:42:56
+ * @date 2021-10-20 13:42:56
  * @since 1.0.0
  */
 public class LimitOffset implements QueryPart {

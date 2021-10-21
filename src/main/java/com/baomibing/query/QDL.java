@@ -54,7 +54,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * tool for create instance
  * 
  * @author zening
- * @data 2021-10-20 13:43:23
+ * @date 2021-10-20 13:43:23
  * @since 1.0.0
  */
 public class QDL {

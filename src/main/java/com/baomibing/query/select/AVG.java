@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
  * SQL AVG function
  * 
  * @author zening
- * @data 2021-10-20 13:35:08
+ * @date 2021-10-20 13:35:08
  * @since 1.0.0
  */
 public class AVG extends SQLFunction {

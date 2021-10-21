@@ -27,7 +27,7 @@ import com.google.common.collect.Lists;
  * SQL groupBy part
  * 
  * @author zening
- * @data 2021-10-20 13:40:05
+ * @date 2021-10-20 13:40:05
  * @since 1.0.0
  */
 public class GroupBy implements QueryPart {

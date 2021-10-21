@@ -24,7 +24,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL in condition
  * 
  * @author zening
- * @data 2021-10-20 11:32:14
+ * @date 2021-10-20 11:32:14
  * @since 1.0.0
  */
 public class IN extends ACondition {

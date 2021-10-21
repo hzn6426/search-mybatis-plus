@@ -23,7 +23,7 @@ import com.google.common.collect.Lists;
  * SQL and condition
  * 
  * @author zening
- * @data 2021-10-20 10:49:37
+ * @date 2021-10-20 10:49:37
  * @since 1.0.0
  */
 public class AND extends ACondition {

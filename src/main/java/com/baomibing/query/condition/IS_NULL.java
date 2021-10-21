@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL is null condition
  * 
  * @author zening
- * @data 2021-10-20 11:32:25
+ * @date 2021-10-20 11:32:25
  * @since 1.0.0
  */
 public class IS_NULL extends ACondition {

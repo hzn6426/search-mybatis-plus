@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.core.toolkit.sql.SqlScriptUtils;
  * Inject method for QBaseMapper 
  * 
  * @author zening
- * @data 2021-10-20 11:50:24
+ * @date 2021-10-20 11:50:24
  * @since 1.0.0
  */
 public abstract class QueryMethod extends AbstractMethod {

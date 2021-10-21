@@ -29,7 +29,7 @@ import com.google.common.collect.Lists;
  * SQL count function
  * 
  * @author zening
- * @data 2021-10-20 13:35:30
+ * @date 2021-10-20 13:35:30
  * @since 1.0.0
  */
 public class COUNT extends SQLFunction {

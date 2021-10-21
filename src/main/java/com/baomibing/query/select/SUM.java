@@ -26,7 +26,7 @@ import com.google.common.collect.Lists;
  * SQL sum function
  * 
  * @author zening
- * @data 2021-10-20 13:38:59
+ * @date 2021-10-20 13:38:59
  * @since 1.0.0
  */
 public class SUM extends SQLFunction {

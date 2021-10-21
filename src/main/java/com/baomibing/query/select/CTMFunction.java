@@ -25,7 +25,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * User customer sql function(select part)
  * 
  * @author zening
- * @data 2021-10-20 11:24:18
+ * @date 2021-10-20 11:24:18
  * @since 1.0.0
  */
 public class CTMFunction extends SQLFunction {

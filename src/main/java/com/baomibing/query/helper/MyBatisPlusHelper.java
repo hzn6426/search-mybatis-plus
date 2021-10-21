@@ -23,7 +23,7 @@ import com.github.benmanes.caffeine.cache.LoadingCache;
  * @see com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper
  * 
  * @author zening
- * @data 2021-10-20 10:38:18
+ * @date 2021-10-20 10:38:18
  * @since 1.0.0
  */
 public abstract class MyBatisPlusHelper {

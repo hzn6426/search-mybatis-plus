@@ -31,7 +31,7 @@ import com.google.common.collect.Lists;
  * SQL select part
  * 
  * @author zening
- * @data 2021-10-20 13:44:40
+ * @date 2021-10-20 13:44:40
  * @since 1.0.0
  */
 public class Select implements QueryPart {

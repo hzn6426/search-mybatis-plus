@@ -18,7 +18,7 @@ package com.baomibing.query.constant;
  * SQL keyword constant
  * 
  * @author zening
- * @data 2021-10-20 11:40:13
+ * @date 2021-10-20 11:40:13
  * @since 1.0.0
  */
 public abstract class SQLConsts {

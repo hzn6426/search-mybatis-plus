@@ -25,7 +25,7 @@ import com.google.common.collect.Lists;
  * SQL having part
  * 
  * @author zening
- * @data 2021-10-20 13:40:27
+ * @date 2021-10-20 13:40:27
  * @since 1.0.0
  */
 public class Having implements QueryPart {

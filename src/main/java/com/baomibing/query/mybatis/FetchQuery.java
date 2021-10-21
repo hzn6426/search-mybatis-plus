@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
  * QBaseMapper for fetchQuery method
  * 
  * @author zening
- * @data 2021-10-20 11:48:05
+ * @date 2021-10-20 11:48:05
  * @since 1.0.0
  */
 public class FetchQuery extends QueryMethod {

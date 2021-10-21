@@ -21,7 +21,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL between and Condition
  * 
  * @author zening
- * @data 2021-10-20 10:51:39
+ * @date 2021-10-20 10:51:39
  * @since 1.0.0
  */
 public class BETWEEN extends ACondition {

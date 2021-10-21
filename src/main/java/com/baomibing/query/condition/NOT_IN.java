@@ -24,7 +24,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL not in condition
  * 
  * @author zening
- * @data 2021-10-20 11:37:46
+ * @date 2021-10-20 11:37:46
  * @since 1.0.0
  */
 public class NOT_IN extends ACondition {

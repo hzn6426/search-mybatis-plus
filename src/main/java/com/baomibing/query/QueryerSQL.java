@@ -20,7 +20,7 @@ import lombok.Getter;
  * property for compose sql in abstract method
  * 
  * @author zening
- * @data 2021-10-20 13:43:54
+ * @date 2021-10-20 13:43:54
  * @since 1.0.0
  */
 @Getter

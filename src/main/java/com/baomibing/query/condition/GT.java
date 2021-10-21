@@ -23,7 +23,7 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL greater than condition
  * 
  * @author zening
- * @data 2021-10-20 11:28:34
+ * @date 2021-10-20 11:28:34
  * @since 1.0.0
  */
 public class GT extends ACondition {

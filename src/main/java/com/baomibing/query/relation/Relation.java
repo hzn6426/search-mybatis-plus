@@ -25,7 +25,7 @@ import lombok.Getter;
  * JOIN relation
  * 
  * @author zening
- * @data 2021-10-20 13:33:52
+ * @date 2021-10-20 13:33:52
  * @since 1.0.0
  */
 @Getter
