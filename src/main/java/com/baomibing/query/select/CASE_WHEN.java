@@ -28,7 +28,6 @@ import com.google.common.collect.Lists;
  * SQL case when clause
  * 
  * @author zening
- * @date 2021-10-20 13:35:18
  * @since 1.0.0
  */
 public class CASE_WHEN extends SQLFunction {

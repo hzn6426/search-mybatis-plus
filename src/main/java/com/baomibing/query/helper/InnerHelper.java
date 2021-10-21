@@ -28,7 +28,6 @@ import com.baomibing.query.SQLQuery;
  * System inner util helper
  * 
  * @author zening
- * @date 2021-10-20 11:42:20
  * @since 1.0.0
  */
 public abstract class InnerHelper {

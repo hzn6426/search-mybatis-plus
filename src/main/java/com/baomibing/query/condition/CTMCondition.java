@@ -29,8 +29,8 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * substr(abc,2 , 10) -> QDL.condition("substr({0},{1},{2}", xxx::abc, new Integer[]{2,10})
  * substr(abc, LOCATE('#', abc) + 1, 10 ) -> QDL.condition("substr({0}, LOCATE('''#''', {0}) + 1, {1})", xxx:abc, 10)
  * </code></pre>
+ * 
  * @author zening
- * @date 2021-10-20 10:51:56
  * @since 1.0.0
  */
 public class CTMCondition extends ACondition {

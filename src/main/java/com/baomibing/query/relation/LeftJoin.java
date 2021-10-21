@@ -25,7 +25,6 @@ import com.google.common.collect.Lists;
  * Left join relation
  * 
  * @author zening
- * @date 2021-10-20 13:34:31
  * @since 1.0.0
  */
 public class LeftJoin extends Relation {

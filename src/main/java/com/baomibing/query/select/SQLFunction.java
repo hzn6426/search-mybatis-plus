@@ -18,7 +18,6 @@ package com.baomibing.query.select;
  * sql function in select clause
  * 
  * @author zening
- * @date 2021-10-20 13:38:33
  * @since 1.0.0
  */
 public abstract class SQLFunction extends SelectablePart {

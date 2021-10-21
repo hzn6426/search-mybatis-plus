@@ -22,7 +22,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * 
  * 
  * @author zening
- * @date 2021-10-20 11:35:20
  * @since 1.0.0
  */
 public class LLIKE extends ACondition {

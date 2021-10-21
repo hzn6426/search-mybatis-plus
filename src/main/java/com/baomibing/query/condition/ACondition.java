@@ -23,7 +23,6 @@ import com.baomibing.query.select.SelectablePart;
  * 条件抽象
  * 
  * @author zening
- * @date 2021-10-20 10:32:55
  * @since 1.0.0
  */
 public abstract class ACondition implements QueryPart {

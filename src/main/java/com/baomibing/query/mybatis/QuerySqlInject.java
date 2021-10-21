@@ -24,7 +24,6 @@ import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
  * Inject method in QBaseMapper
  * 
  * @author zening
- * @date 2021-10-20 11:54:14
  * @since 1.0.0
  */
 public class QuerySqlInject extends DefaultSqlInjector {

@@ -24,7 +24,6 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
  * @see QBaseMapper
  * 
  * @author zening
- * @date 2021-10-20 11:42:57
  * @since 1.0.0
  */
 public class CountQuery extends QueryMethod {

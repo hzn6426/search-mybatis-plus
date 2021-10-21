@@ -23,7 +23,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL greater than or equal condition
  * 
  * @author zening
- * @date 2021-10-20 11:31:54
  * @since 1.0.0
  */
 public class GTE extends ACondition {

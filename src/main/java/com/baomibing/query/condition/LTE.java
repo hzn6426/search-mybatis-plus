@@ -23,7 +23,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL less than or equal condition
  * 
  * @author zening
- * @date 2021-10-20 11:36:24
  * @since 1.0.0
  */
 public class LTE extends ACondition {

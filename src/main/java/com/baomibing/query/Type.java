@@ -18,7 +18,6 @@ package com.baomibing.query;
  * type for generic
  * 
  * @author zening
- * @date 2021-10-20 13:45:59
  * @since 1.0.0
  */
 public interface Type<T> {

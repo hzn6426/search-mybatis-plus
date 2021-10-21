@@ -22,7 +22,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL as operator
  * 
  * @author zening
- * @date 2021-10-20 13:34:54
  * @since 1.0.0
  */
 public class AS extends SQLFunction {

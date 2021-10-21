@@ -18,7 +18,6 @@ package com.baomibing.query.condition;
  * SQL false condition
  * 
  * @author zening
- * @date 2021-10-20 11:28:13
  * @since 1.0.0
  */
 public class FalseCondition extends ACondition {

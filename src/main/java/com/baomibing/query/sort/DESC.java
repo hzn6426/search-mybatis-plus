@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
  * SQL order desc
  * 
  * @author zening
- * @date 2021-10-20 13:39:36
  * @since 1.0.0
  */
 public class DESC implements QueryPart {

@@ -18,7 +18,6 @@ package com.baomibing.query.select;
  * abstract class for Field
  * 
  * @author zening
- * @date 2021-10-20 13:36:37
  * @since 1.0.0
  */
 public abstract class FieldPart extends SelectablePart  {

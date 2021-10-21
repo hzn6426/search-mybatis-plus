@@ -29,7 +29,6 @@ import com.google.common.collect.Lists;
  * SQL MAX function
  * 
  * @author zening
- * @date 2021-10-20 13:37:27
  * @since 1.0.0
  */
 public class MAX extends SQLFunction {

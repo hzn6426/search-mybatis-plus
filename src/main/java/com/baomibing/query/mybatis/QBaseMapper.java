@@ -28,7 +28,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * A BaseMapper for fetch data by SQLQuery
  * 
  * @author zening
- * @date 2021-10-20 11:48:38
  * @since 1.0.0
  */
 public interface QBaseMapper<T> extends BaseMapper<T> {

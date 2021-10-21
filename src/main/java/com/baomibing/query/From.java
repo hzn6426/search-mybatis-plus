@@ -23,7 +23,6 @@ import lombok.Getter;
  * SQL from part
  * 
  * @author zening
- * @date 2021-10-20 13:39:49
  * @since 1.0.0
  */
 @Getter

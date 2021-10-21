@@ -18,7 +18,6 @@ package com.baomibing.query;
  * SQLQuery interface(maybe SQLUpdater, SQLInserter in future)
  * 
  * @author zening
- * @date 2021-10-20 13:40:39
  * @since 1.0.0
  */
 public interface IQuery {

@@ -21,7 +21,6 @@ import com.baomibing.query.helper.MyBatisPlusHelper;
  * Cross join relation
  * 
  * @author zening
- * @date 2021-10-20 13:33:43
  * @since 1.0.0
  */
 public class CrossJoin extends Relation {

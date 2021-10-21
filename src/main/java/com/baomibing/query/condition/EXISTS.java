@@ -23,7 +23,6 @@ import com.baomibing.query.constant.Strings;
  * SQL exists condition
  * 
  * @author zening
- * @date 2021-10-20 11:27:51
  * @since 1.0.0
  */
 public class EXISTS extends ACondition {

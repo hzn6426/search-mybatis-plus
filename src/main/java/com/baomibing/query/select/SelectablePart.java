@@ -20,7 +20,6 @@ import com.baomibing.query.QueryPart;
  * selectable part in SQL 
  * 
  * @author zening
- * @date 2021-10-20 13:37:53
  * @since 1.0.0
  */
 public abstract class SelectablePart implements QueryPart {

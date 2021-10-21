@@ -26,7 +26,6 @@ import com.google.common.collect.Lists;
  * SQL distinct clause
  * 
  * @author zening
- * @date 2021-10-20 13:35:53
  * @since 1.0.0
  */
 public class DISTINCT extends FieldPart {

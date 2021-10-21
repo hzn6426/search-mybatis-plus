@@ -18,7 +18,6 @@ package com.baomibing.query.mybatis;
  * Result type class which handle in intercepter
  * 
  * @author zening
- * @date 2021-10-20 11:51:29
  * @since 1.0.0
  */
 public class QueryResult {

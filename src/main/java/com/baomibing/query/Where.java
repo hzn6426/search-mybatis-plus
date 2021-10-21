@@ -25,7 +25,6 @@ import com.google.common.collect.Lists;
  * SQL where part
  * 
  * @author zening
- * @date 2021-10-20 13:46:15
  * @since 1.0.0
  */
 public class Where implements QueryPart {

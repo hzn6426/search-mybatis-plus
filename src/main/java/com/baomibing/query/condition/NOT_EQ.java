@@ -23,7 +23,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL not equal condition(<> or !=)
  * 
  * @author zening
- * @date 2021-10-20 11:36:42
  * @since 1.0.0
  */
 public class NOT_EQ extends ACondition {

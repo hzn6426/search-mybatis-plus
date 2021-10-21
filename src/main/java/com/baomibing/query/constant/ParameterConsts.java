@@ -18,7 +18,6 @@ package com.baomibing.query.constant;
  * Constant for binding parameters
  * 
  * @author zening
- * @date 2021-10-20 11:39:19
  * @since 1.0.0
  */
 public abstract class ParameterConsts {

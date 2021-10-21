@@ -24,7 +24,6 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * SQL select distinct part
  * 
  * @author zening
- * @date 2021-10-20 13:44:50
  * @since 1.0.0
  */
 public class SelectDistinct extends Select {

@@ -23,7 +23,6 @@ import com.google.common.collect.Lists;
  * SQL or condition
  * 
  * @author zening
- * @date 2021-10-20 11:38:26
  * @since 1.0.0
  */
 public class OR extends ACondition {

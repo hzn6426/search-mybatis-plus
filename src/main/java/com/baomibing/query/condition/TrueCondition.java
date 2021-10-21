@@ -18,7 +18,6 @@ package com.baomibing.query.condition;
  * SQL true condition
  * 
  * @author zening
- * @date 2021-10-20 11:38:55
  * @since 1.0.0
  */
 public class TrueCondition extends ACondition {
