@@ -1,5 +1,5 @@
 #  search-mybatis-plus 查询辅助工具
-
+  群号816652102 欢迎交流
 ## 项目介绍
 search-mybatis-plus 是一款查询辅助工具包，以编程的方式模拟SQL语言进行数据查询，无缝集成Mybatis-plus，具有以下功能：
 - 模拟SQL,以lambda方式进行构建SQL查询,直接构建查询，无需再写xml文件
@@ -16,6 +16,14 @@ search-mybatis-plus 是一款查询辅助工具包，以编程的方式模拟SQL
 - QDL 工具类包含条件及其他函数的创建引用,例如eq条件 -> QDL.eq()
 
 ## 使用
+ 
+ 添加 Maven 依赖或者下载项目执行 "mvn clean install"
+ 
+ ```java
+	<groupId>com.baomibing</groupId>
+	<artifactId>search-mybatis-plus</artifactId>
+	<version>1.0.0</version>
+ ```
  * Mapper继承QBaseMapper(必须)
  * 构建SQLQuery
  * 调用QBaseMapper中方法查询数据
