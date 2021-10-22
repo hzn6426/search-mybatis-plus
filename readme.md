@@ -17,7 +17,7 @@ search-mybatis-plus 是一款查询辅助工具包，以编程的方式模拟SQL
 
 ## 使用
  
- 添加 Maven 依赖或者下载项目执行 "mvn clean install"
+ 添加 Maven(如果找不到可以用https://repo1.maven.org/maven2/) 依赖或者下载项目执行 "mvn clean install"
  
  ```java
 	<groupId>com.baomibing</groupId>
