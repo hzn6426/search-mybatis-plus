@@ -31,6 +31,7 @@ public abstract class ACondition implements QueryPart {
 	
 	protected SelectablePart selectablePart;
 
+	protected boolean beTrue = Boolean.TRUE;
 
 	protected Object value;
 

@@ -15,13 +15,13 @@
  */
 package com.baomibing.query.select;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import com.baomibing.query.QueryPart;
 import com.baomibing.query.constant.SQLConsts;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 /**
  * SQL distinct clause
  * 
@@ -30,7 +30,11 @@ import com.google.common.collect.Lists;
  */
 public class DISTINCT extends FieldPart {
 
-	private List<QueryPart> fields;
+	private List<FieldPart> fields;
+	
+	public DISTINCT(Alias... aliases) {
+		this(ArrayUtils.addAll(new FieldPart[]{}, aliases));
+	}
 	
 	public <T> DISTINCT(SFunction<T, ?> fun) {
 		this(new Field<T>(fun));
@@ -134,14 +138,14 @@ public class DISTINCT extends FieldPart {
 	public <T1,T2,T3,T4,T5,T6,T7,T8,T9,T10,T11,T12,T13,T14,T15,T16,T17,T18,T19,T20,T21,T22> DISTINCT(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11
 			, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SFunction<T21, ?> fun21, SFunction<T22, ?> fun22) {
 		this(new Field<>(fun1), new Field<>(fun2), new Field<>(fun3), new Field<>(fun4), new Field<>(fun5), new Field<>(fun6), new Field<>(fun7), new Field<>(fun8), new Field<>(fun9), new Field<>(fun10), new Field<>(fun11), new Field<>(fun12), new Field<>(fun13), new Field<>(fun14), new Field<>(fun15), new Field<>(fun16)
-				, new Field<>(fun17), new Field<>(fun18), new Field<>(fun19), new Field<>(fun20), new Field<>(fun21), new Field<>(fun21));
+				, new Field<>(fun17), new Field<>(fun18), new Field<>(fun19), new Field<>(fun20), new Field<>(fun21), new Field<>(fun22));
 	}
 	
-	private DISTINCT(QueryPart... parts) {
+	private DISTINCT(FieldPart... parts) {
 		if (fields == null) {
 			fields = Lists.newArrayList();
 		}
-		for (QueryPart q : parts) {
+		for (FieldPart q : parts) {
 			fields.add(q);
 		}
 	}

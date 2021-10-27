@@ -19,6 +19,11 @@ public enum SqlMethod {
     SELECT_FETCH_INTO("fetchQueryInto", "查询满足条件总记录数",
    	     "<script>\n SELECT %s FROM %s %s %s %s %s %s %s\n</script>"),
     
+    UPDATE_QUERY("updateQuery", "更新满足条件的记录",
+        "<script>\n UPDATE %s SET %s %s %s %s %s\n</script>"),
+    
+    DELETE_QUERY("deleteQuery", "删除满足条件的记录",
+                     "<script>\n DELETE FROM %s %s %s %s %s\n</script>"),
     ;
 
     private final String method;

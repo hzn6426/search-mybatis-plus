@@ -15,18 +15,13 @@
  */
 package com.baomibing.query;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import com.baomibing.query.select.DISTINCT;
-import com.baomibing.query.select.Field;
-import com.baomibing.query.select.FieldPart;
-import com.baomibing.query.select.SQLFunction;
-import com.baomibing.query.select.SelectablePart;
+import com.baomibing.query.select.*;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 /**
  * SQL select part
  * 
@@ -41,6 +36,10 @@ public class Select implements QueryPart {
 	
 	public Select(String select) {
 		this.columns = select;
+	}
+	
+	public Select(Alias... aliases) {
+		this(ArrayUtils.addAll(new SelectablePart[]{}, aliases));
 	}
 	
 	public Select(SQLFunction... sqlFunctions) {

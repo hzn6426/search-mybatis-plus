@@ -15,15 +15,17 @@
  */
 package com.baomibing.query.helper;
 
+import com.baomibing.query.SQLQuery;
+import com.baomibing.query.expression.Expression;
+import com.baomibing.query.select.Alias;
+import com.baomibing.query.select.SQLFunction;
+import org.apache.commons.lang3.ArrayUtils;
+
 import java.lang.reflect.InvocationTargetException;
 import java.text.MessageFormat;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.ArrayUtils;
-
-import com.baomibing.query.SQLQuery;
 /**
  * System inner util helper
  * 
@@ -63,25 +65,34 @@ public abstract class InnerHelper {
 			return null;
 		}
 		Class<?> type = value.getClass();
-		if (SQLQuery.class.equals(type)) {
+		if (value instanceof  SQLQuery) {
 			return ((SQLQuery) value).toSQL();
 		}
+		if (value instanceof  SQLFunction) {
+			return ((SQLFunction) value).toSQL();
+		}
+		if (value instanceof Expression) {
+			return ((Expression) value).toSQL();
+		}
+		if (value instanceof Alias) {
+			return ((Alias) value).toSQL();
+		}
 		if (type.isPrimitive()) {
-			if (boolean.class.equals(type)) {
+			if (value instanceof Boolean) {
 				type = Boolean.class;
-			} else if (char.class.equals(type)) {
+			} else if (value instanceof Character) {
 				type = Character.class;
-			} else if (byte.class.equals(type)) {
+			} else if (value instanceof Byte) {
 				type = Byte.class;
-			} else if (short.class.equals(type)) {
+			} else if (value instanceof Short) {
 				type = Short.class;
-			} else if (int.class.equals(type)) {
+			} else if (value instanceof Integer) {
 				type = Integer.class;
-			} else if (long.class.equals(type)) {
+			} else if (value instanceof Long) {
 				type = Long.class;
-			} else if (float.class.equals(type)) {
+			} else if (value instanceof Float) {
 				type = Float.class;
-			} else if (double.class.equals(type)) {
+			} else if (value instanceof Double) {
 				type = Double.class;
 			}
 		}
@@ -91,44 +102,36 @@ public abstract class InnerHelper {
 			if (value instanceof Number) {
 				Number num = (Number) value;
 				if (type.equals(Double.class))
-					return new Double(num.doubleValue());
+					return num.doubleValue();
 				if (type.equals(Float.class))
-					return new Float(num.floatValue());
+					return num.floatValue();
 				if (type.equals(Long.class))
-					return new Long(num.longValue());
+					return num.longValue();
 				if (type.equals(Integer.class))
-					return new Integer(num.intValue());
+					return num.intValue();
 				if (type.equals(Short.class))
-					return new Short(num.shortValue());
+					return num.shortValue();
 				try {
 					return type.getConstructor(new Class[] { String.class })
-							.newInstance(new Object[] { value.toString() });
-				} catch (IllegalArgumentException e) {
+							.newInstance(value.toString());
+				} catch (IllegalArgumentException | SecurityException | InstantiationException
+					| IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
 
-				} catch (SecurityException e) {
-
-				} catch (InstantiationException e) {
-
-				} catch (IllegalAccessException e) {
-
-				} catch (InvocationTargetException e) {
-
-				} catch (NoSuchMethodException e) {
 				}
 			} else if (value instanceof String) {
 				try {
 					if (type.equals(Double.class))
-						return Double.valueOf(Double.parseDouble((String) value));
+						return Double.parseDouble((String) value);
 					if (type.equals(Float.class))
-						return Float.valueOf(Float.parseFloat((String) value));
+						return Float.parseFloat((String) value);
 					if (type.equals(Long.class))
-						return Long.valueOf(Long.parseLong((String) value));
+						return Long.parseLong((String) value);
 					if (type.equals(Integer.class))
-						return Integer.valueOf(Integer.parseInt((String) value));
+						return Integer.parseInt((String) value);
 					if (type.equals(Short.class))
-						return Short.valueOf(Short.parseShort((String) value));
+						return Short.parseShort((String) value);
 					if (type.equals(Byte.class))
-						return Byte.valueOf(Byte.parseByte((String) value));
+						return Byte.parseByte((String) value);
 				} catch (NumberFormatException ex) {
 				}
 			}

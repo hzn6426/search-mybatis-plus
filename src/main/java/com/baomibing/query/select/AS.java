@@ -15,14 +15,17 @@
  */
 package com.baomibing.query.select;
 
+import com.baomibing.query.SQLQuery;
 import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.constant.Strings;
 import com.baomibing.query.helper.InnerHelper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+
 /**
  * SQL as operator
  * 
  * @author zening
- * @since 1.0.0
+ * @since 1.0.1
  */
 public class AS extends SQLFunction {
 	
@@ -40,8 +43,19 @@ public class AS extends SQLFunction {
 		this.alias = alias;
 	}
 
+	private SQLQuery sqlQuery;
+
+	public <T> AS(SQLQuery query, String alias) {
+		this.sqlQuery = query;
+		this.alias = alias;
+	}
+
 	@Override
 	public String toSQL() {
+		if (sqlQuery != null) {
+			return Strings.LEFT_BRACKET + sqlQuery.toSQL() + Strings.RIGHT_BRACKET + SQLConsts.SQL_AS
+					+ InnerHelper.displayValue(alias);
+		}
 		return  selectablePart.toSQL() + SQLConsts.SQL_AS + InnerHelper.displayValue(alias);
 	}
 	

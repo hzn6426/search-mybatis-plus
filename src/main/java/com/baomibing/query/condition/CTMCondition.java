@@ -15,11 +15,12 @@
  */
 package com.baomibing.query.condition;
 
-import org.apache.commons.lang3.ArrayUtils;
-
+import com.baomibing.query.constant.Strings;
 import com.baomibing.query.helper.InnerHelper;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+import org.apache.commons.lang3.ArrayUtils;
 /**
  * SQL customer function(where part)
  * 
@@ -38,22 +39,71 @@ public class CTMCondition extends ACondition {
 	private String funSQL = "";
 
 	public <T> CTMCondition(SFunction<T, ?> propertyFunction, String sql, Object... args) {
-		this.selectablePart = new Field<>(propertyFunction);
-		funSQL = InnerHelper.format(sql, args);
+		this(true, propertyFunction, sql, args);
+	}
+	
+	public <T> CTMCondition(Alias alias, String sql, Object... args) {
+		this(true, alias, sql, args);
+	}
+	
+	public <T> CTMCondition(String sql, Alias alias, Object... args) {
+		this(true, sql, alias, args);
 	}
 	
 	public <T> CTMCondition(String sql, SFunction<T, ?> propertyFunction, Object... args) {
-		String column = new Field<T>(propertyFunction).toSQL();
-		ArrayUtils.add(args, column);
-		funSQL = InnerHelper.format(sql, args);
+		this(true, sql, propertyFunction, args);
 	}
 	
 	public CTMCondition(String sql, Object... args) {
-		funSQL = InnerHelper.format(sql, args);
+		this(true, sql, args);
 	}
 	
+	public <T> CTMCondition(boolean beTrue, SFunction<T, ?> propertyFunction, String sql, Object... args) {
+		if (beTrue) {
+			this.selectablePart = new Field<>(propertyFunction);
+			funSQL = InnerHelper.format(sql, args);
+		}
+		this.beTrue = beTrue;
+	}
+	
+	public <T> CTMCondition(boolean beTrue, Alias alias, String sql, Object... args) {
+		if (beTrue) {
+			this.selectablePart = alias;
+			funSQL = InnerHelper.format(sql, args);
+		}
+		this.beTrue = beTrue;
+	}
+
+	public <T> CTMCondition(boolean beTrue, String sql, SFunction<T, ?> propertyFunction, Object... args) {
+		if (beTrue) {
+			String column = new Field<T>(propertyFunction).toSQL();
+			ArrayUtils.add(args, column);
+			funSQL = InnerHelper.format(sql, args);
+		}
+		this.beTrue = beTrue;
+	}
+	
+	public <T> CTMCondition(boolean beTrue, String sql, Alias alias, Object... args) {
+		if (beTrue) {
+			String column = alias.toSQL();
+			ArrayUtils.add(args, column);
+			funSQL = InnerHelper.format(sql, args);
+		}
+		this.beTrue = beTrue;
+	}
+
+	public CTMCondition(boolean beTrue, String sql, Object... args) {
+		if (beTrue) {
+			funSQL = InnerHelper.format(sql, args);
+		}
+		this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
 		return selectablePart == null ? "" : selectablePart.toSQL() + funSQL;
 	}
 }

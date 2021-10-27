@@ -18,6 +18,7 @@ package com.baomibing.query.condition;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import com.baomibing.query.constant.Strings;
 import com.google.common.collect.Lists;
 /**
  * SQL and condition
@@ -28,26 +29,35 @@ import com.google.common.collect.Lists;
 public class AND extends ACondition {
 
 	
-	@SuppressWarnings("unchecked")
 	public AND(ACondition... conditions) {
-		operator = Operator.AND.getOp();
-		value = Lists.newArrayList();
-		for(ACondition c : conditions) {
-			((List<ACondition>)value).add(c);
+		this(true, conditions);
+	}
+
+	@SuppressWarnings("unchecked")
+	public AND(boolean beTrue, ACondition... conditions) {
+		this.beTrue = beTrue;
+		if (beTrue) {
+			operator = Operator.AND.getOp();
+			value = Lists.newArrayList();
+			for (ACondition c : conditions) {
+				((List<ACondition>) value).add(c);
+			}
 		}
+
 	}
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
 		StringBuilder s = new StringBuilder();
 		if (value instanceof List) {
 			List<ACondition> conditons = (List<ACondition>) value;
 			s.append("( ");
 			s.append(conditons.stream().map(c -> c.toSQL()).collect(Collectors.joining(OP_AND)));
 			s.append(" )");
-		} else {
-			s.append(selectablePart.toSQL()).append(OP_AND).equals(value);
 		}
 		return s.toString();
 	}

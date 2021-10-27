@@ -16,6 +16,7 @@
 package com.baomibing.query.relation;
 
 import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.constant.Strings;
 import com.baomibing.query.helper.MyBatisPlusHelper;
 /**
  * Cross join relation
@@ -29,8 +30,18 @@ public class CrossJoin extends Relation {
 		this.relationClass = clazz;
 	}
 	
+	public CrossJoin(boolean beTrue, Class<?> clazz) {
+		if (beTrue) {
+			this.relationClass = clazz;
+		}
+		this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
 		StringBuilder s = new StringBuilder();
 		s.append(SQLConsts.SQL_CROSS_JOIN).append(MyBatisPlusHelper.getTableName(relationClass));
 		return s.toString();

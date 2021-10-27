@@ -1,13 +1,5 @@
 package com.baomibing.query.helper;
 
-import static java.util.Locale.ENGLISH;
-
-import java.util.concurrent.TimeUnit;
-
-import org.apache.ibatis.reflection.property.PropertyNamer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
 import com.baomibing.query.constant.Strings;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
@@ -18,6 +10,13 @@ import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import org.apache.ibatis.reflection.property.PropertyNamer;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
+import java.util.concurrent.TimeUnit;
+
+import static java.util.Locale.ENGLISH;
 /**
  * mybatis-plus tool
  * @see com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper
@@ -54,7 +53,21 @@ public abstract class MyBatisPlusHelper {
 			createCache(info);
 		}
 		columnCache = cache.get(formatKey(tableName + Strings.DOT + fieldName));
-		return tableName + Strings.DOT + columnCache.getColumn();
+		return tableName + Strings.DOT + "`" + columnCache.getColumn() + "`";
+	}
+	
+	public static <T> String columnToString(SFunction<?, ?> column, String tableAlias) {
+		SerializedLambda lambda = LambdaUtils.resolve(column);
+		Class<?> aClass = lambda.getInstantiatedType();
+		String fieldName = PropertyNamer.methodToProperty(lambda.getImplMethodName());
+		TableInfo info = TableInfoHelper.getTableInfo(aClass);
+		String tableName = info.getTableName();
+		ColumnCache columnCache = cache.get(formatKey(tableName + Strings.DOT + fieldName));
+		if (columnCache == null) {
+			createCache(info);
+		}
+		columnCache = cache.get(formatKey(tableName + Strings.DOT + fieldName));
+		return tableAlias + Strings.DOT + "`" + columnCache.getColumn() + "`";
 	}
 	
 	private static String formatKey(String key) {

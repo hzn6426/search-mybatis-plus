@@ -15,7 +15,10 @@
  */
 package com.baomibing.query.condition;
 
+import com.baomibing.query.constant.Strings;
+import com.baomibing.query.expression.Expression;
 import com.baomibing.query.helper.MyBatisPlusHelper;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
 import com.baomibing.query.select.SQLFunction;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
@@ -56,8 +59,98 @@ private boolean beValueFun = false;
 		this.beValueFun = true;
 	}
 
+	public <T1> NOT_EQ(boolean beTrue, SFunction<T1, ?> propertyFunction, Object value) {
+		if (beTrue) {
+			this.selectablePart = new Field<>(propertyFunction);
+			this.operator = Operator.NOT_EQ.getOp();
+			this.value = value;
+		}
+		this.beTrue = beTrue;
+	}
+
+	public <T1, T2> NOT_EQ(boolean beTrue, SFunction<T1, ?> propertyFunction, SFunction<T2, ?> valueFunction) {
+		if (beTrue) {
+			this.selectablePart = new Field<>(propertyFunction);
+			this.operator = Operator.NOT_EQ.getOp();
+			this.value = MyBatisPlusHelper.columnToString(valueFunction);
+			this.beValueFun = true;
+		}
+		this.beTrue = beTrue;
+	}
+
+	public <T1> NOT_EQ(boolean beTrue, SQLFunction sqlFunction, Object value) {
+		if (beTrue) {
+			this.selectablePart = sqlFunction;
+			this.operator = Operator.NOT_EQ.getOp();
+			this.value = value;
+		}
+		this.beTrue = beTrue;
+	}
+
+	public <T1> NOT_EQ(boolean beTrue, SQLFunction sqlFunction, SFunction<T1, ?> valueFunction) {
+		if (beTrue) {
+			this.selectablePart = sqlFunction;
+			this.operator = Operator.NOT_EQ.getOp();
+			this.value = MyBatisPlusHelper.columnToString(valueFunction);
+			this.beValueFun = true;
+		}
+		this.beTrue = beTrue;
+	}
+	
+	public NOT_EQ(Alias alias1, Alias alias2) {
+		this.selectablePart = alias1;
+		this.operator = Operator.NOT_EQ.getOp();
+		this.value = alias2;
+		this.beValueFun = true;
+	}
+	
+	public NOT_EQ(Alias alias, Object value) {
+		this.selectablePart = alias;
+		this.operator = Operator.NOT_EQ.getOp();
+		this.value = value;
+	}
+	
+	public NOT_EQ(Alias alias, Expression expression) {
+		this.selectablePart = alias;
+		this.operator = Operator.NOT_EQ.getOp();
+		this.value = expression;
+		this.beValueFun = true;
+	}
+	
+	public NOT_EQ(boolean beTrue, Alias alias1, Alias alias2) {
+		if (beTrue) {
+			this.selectablePart = alias1;
+			this.operator = Operator.NOT_EQ.getOp();
+			this.value = alias2;
+			this.beValueFun = true;
+		}
+		this.beTrue = beTrue;
+	}
+	
+	public NOT_EQ(boolean beTrue, Alias alias, Object value) {
+		if (beTrue) {
+			this.selectablePart = alias;
+			this.operator = Operator.NOT_EQ.getOp();
+			this.value = value;
+		}
+		this.beTrue = beTrue;
+	}
+	
+	public NOT_EQ(boolean beTrue, Alias alias, Expression expression) {
+		if (beTrue) {
+			this.selectablePart = alias;
+			this.operator = Operator.NOT_EQ.getOp();
+			this.value = expression;
+			this.beValueFun = true;
+		}
+		this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
 		StringBuilder s = new StringBuilder();
 		s.append(selectablePart.toSQL()).append(OP_NOT_EQUAL).append(beValueFun ? value :  displayValue(value));
 		return s.toString();

@@ -15,14 +15,17 @@
  */
 package com.baomibing.query;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
 import com.baomibing.query.select.FieldPart;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.ArrayUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
 /**
  * SQL groupBy part
  * 
@@ -32,6 +35,10 @@ import com.google.common.collect.Lists;
 public class GroupBy implements QueryPart {
 
 	private List<FieldPart> fields;
+	
+	public GroupBy(Alias... aliases) {
+		this(ArrayUtils.addAll(new FieldPart[]{}, aliases));
+	}
 	
 	public <T> GroupBy(SFunction<T, ?> fun) {
 		this(new Field<T>(fun));

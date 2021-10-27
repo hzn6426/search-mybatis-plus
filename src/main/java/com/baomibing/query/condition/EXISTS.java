@@ -32,10 +32,20 @@ public class EXISTS extends ACondition {
 		this.value = queryer;
 	}
 
+	public <T1> EXISTS(boolean beTrue, SQLQuery queryer) {
+		if (beTrue) {
+			this.operator = Operator.EXIST.getOp();
+			this.value = queryer;
+		}
+		this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
-		return SQLConsts.SQL_EXISTS + Strings.LEFT_BRACKET + ((SQLQuery)this.value).toSQL() + Strings.RIGHT_BRACKET;
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
+		return SQLConsts.SQL_EXISTS + Strings.LEFT_BRACKET + ((SQLQuery) this.value).toSQL() + Strings.RIGHT_BRACKET;
 	}
-	
-	
+
 }

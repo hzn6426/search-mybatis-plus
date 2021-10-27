@@ -16,6 +16,7 @@
 package com.baomibing.query;
 
 import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.sort.ASC;
 import com.baomibing.query.sort.DESC;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
@@ -29,7 +30,11 @@ public class OrderBy {
 	
 	private ASC asc;
 	private DESC desc;
-
+	
+	public <T> void asc(Alias... aliases) {
+		asc = new ASC(aliases);
+	}
+	
 	public <T> void asc(SFunction<T, ?> fun) {
 		asc = new ASC(fun);
 	}
@@ -124,6 +129,9 @@ public class OrderBy {
 		asc = new ASC(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,fun17,fun18,fun19,fun20,fun21);
 	}
 	
+	public <T> void desc(Alias... aliases) {
+		desc = new DESC(aliases);
+	}
 	
 	public <T> void desc(SFunction<T, ?> fun) {
 		desc = new DESC(fun);

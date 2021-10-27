@@ -15,8 +15,11 @@
  */
 package com.baomibing.query.condition;
 
+import com.baomibing.query.constant.Strings;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+
 /**
  * SQL is null condition
  * 
@@ -25,17 +28,41 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  */
 public class IS_NULL extends ACondition {
 
-	public  IS_NULL(SFunction<?, ?> propertyFunction) {
+	public IS_NULL(SFunction<?, ?> propertyFunction) {
 		this.selectablePart = new Field<>(propertyFunction);
 		this.operator = Operator.IS_NULL.getOp();
 	}
+
+	public IS_NULL(boolean beTrue, SFunction<?, ?> propertyFunction) {
+		if (beTrue) {
+			this.selectablePart = new Field<>(propertyFunction);
+			this.operator = Operator.IS_NULL.getOp();
+		}
+		this.beTrue = beTrue;
+	}
 	
+	public IS_NULL(Alias alias) {
+		this.selectablePart = alias;
+		this.operator = Operator.IS_NULL.getOp();
+	}
 	
+	public IS_NULL(boolean beTrue, Alias alias) {
+		if (beTrue) {
+			this.selectablePart = alias;
+			this.operator = Operator.IS_NULL.getOp();
+		}
+		this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
 		StringBuilder s = new StringBuilder();
 		s.append(selectablePart.toSQL()).append(OP_IS_NULL);
 		return s.toString();
+
 	}
-	
+
 }

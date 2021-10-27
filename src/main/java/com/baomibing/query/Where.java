@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import com.baomibing.query.condition.ACondition;
+import com.baomibing.query.condition.AND;
 import com.baomibing.query.constant.SQLConsts;
 import com.google.common.collect.Lists;
 /**
@@ -30,9 +31,14 @@ import com.google.common.collect.Lists;
 public class Where implements QueryPart {
 	
 	public Where(ACondition... conditions) {
+		// 多个条件默认是AND
 		this.conditions = Lists.newArrayList();
-		for(ACondition c : conditions) {
-			this.conditions.add(c);
+		if (conditions != null && conditions.length > 1) {
+			this.conditions.add(new AND(conditions));
+		} else {
+			for (ACondition c : conditions) {
+				this.conditions.add(c);
+			}
 		}
 	}
 

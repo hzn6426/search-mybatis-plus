@@ -22,7 +22,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.baomibing.query.SQLDelete;
 import com.baomibing.query.SQLQuery;
+import com.baomibing.query.SQLUpdate;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 /**
  * A BaseMapper for fetch data by SQLQuery
@@ -34,8 +36,11 @@ public interface QBaseMapper<T> extends BaseMapper<T> {
 
 	<Q> List<Q> fetchQuery(@Param(QUERY_WRAPPER) SQLQuery query);
 	
-	int countQuery(@Param(QUERY_WRAPPER) SQLQuery query);
+	Integer countQuery(@Param(QUERY_WRAPPER) SQLQuery query);
 	
-	<Q> List<Q> fetchQueryInto(@Param(QUERY_WRAPPER) SQLQuery query, @Param(QUERY_TO_CLASS)Class<Q> clazz);
+	<Q> List<Q> fetchQueryInto(@Param(QUERY_WRAPPER) SQLQuery query, @Param(QUERY_TO_CLASS) Class<Q> clazz);
 	
+	Integer updateQuery(@Param(QUERY_WRAPPER) SQLUpdate update);
+	
+	Integer deleteQuery(@Param(QUERY_WRAPPER) SQLDelete delete);
 }

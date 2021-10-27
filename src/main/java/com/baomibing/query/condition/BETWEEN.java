@@ -15,6 +15,8 @@
  */
 package com.baomibing.query.condition;
 
+import com.baomibing.query.constant.Strings;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 /**
@@ -27,15 +29,40 @@ public class BETWEEN extends ACondition {
 	
 
 	public  BETWEEN(SFunction<?, ?> propertyFunction, Object value1, Object value2) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.BETWEEN.getOp();
-		this.value = value1;
-		this.value2 = value2;
-		
+		this(true, propertyFunction, value1, value2);
 	}
+
+	public BETWEEN(boolean beTrue, SFunction<?, ?> propertyFunction, Object value1, Object value2) {
+		if (beTrue) {
+			this.selectablePart = new Field<>(propertyFunction);
+			this.operator = Operator.BETWEEN.getOp();
+			this.value = value1;
+			this.value2 = value2;
+		}
+		this.beTrue = beTrue;
+	}
+	
+	public BETWEEN(Alias alias, Object value1, Object value2) {
+		this(true, alias, value1, value2);
+	}
+	
+	public BETWEEN(boolean beTrue, Alias alias, Object value1, Object value2) {
+		if (beTrue) {
+			this.selectablePart = alias;
+			this.operator = Operator.BETWEEN.getOp();
+			this.value = value1;
+			this.value2 = value2;
+		}
+		this.beTrue = beTrue;
+	}
+	
+	
 
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
 		StringBuilder s = new StringBuilder();
 		s.append(selectablePart.toSQL()).append(OP_BETWEEN).append(displayValue(value)).append(OP_AND).append(displayValue(value2));
 		return s.toString();

@@ -34,6 +34,8 @@ public class QuerySqlInject extends DefaultSqlInjector {
 		methodList.add(new FetchQuery());
 		methodList.add(new FetchQueryInto());
 		methodList.add(new CountQuery());
+		methodList.add(new UpdateQuery());
+		methodList.add(new DeleteQuery());
 		return methodList;
 	}
 

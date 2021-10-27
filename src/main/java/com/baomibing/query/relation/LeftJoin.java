@@ -15,12 +15,17 @@
  */
 package com.baomibing.query.relation;
 
-import java.util.stream.Collectors;
-
+import com.baomibing.query.QueryPart;
 import com.baomibing.query.condition.ACondition;
+import com.baomibing.query.condition.AND;
 import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.constant.Strings;
 import com.baomibing.query.helper.MyBatisPlusHelper;
+import com.baomibing.query.select.Alias;
 import com.google.common.collect.Lists;
+
+import java.util.Arrays;
+import java.util.stream.Collectors;
 /**
  * Left join relation
  * 
@@ -30,20 +35,49 @@ import com.google.common.collect.Lists;
 public class LeftJoin extends Relation {
 
 	public LeftJoin(Class<?> clazz, ACondition... conditions) {
-		this.relationClass = clazz;
+		this(true, clazz, conditions);
+	}
+	
+	private Alias alias;
+	
+	//self join
+	public LeftJoin(Alias alias, ACondition... conditions) {
+		this.alias = alias;
 		if (this.conditions == null) {
 			this.conditions = Lists.newArrayList();
 		}
-		for(ACondition c : conditions) {
-			this.conditions.add(c);
+		if (conditions != null && conditions.length > 1) {
+			this.conditions.add(new AND(conditions));
+		} else {
+			this.conditions.addAll(Arrays.asList(conditions));
 		}
 	}
 	
+	public LeftJoin(boolean beTrue, Class<?> clazz, ACondition... conditions) {
+		if (beTrue) {
+			this.relationClass = clazz;
+			if (this.conditions == null) {
+				this.conditions = Lists.newArrayList();
+			}
+			if (conditions != null && conditions.length > 1) {
+				this.conditions.add(new AND(conditions));
+			} else {
+				this.conditions.addAll(Arrays.asList(conditions));
+			}
+		}
+		this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
+		String tableName = alias == null ? MyBatisPlusHelper.getTableName(relationClass)
+			: MyBatisPlusHelper.getTableName(alias.getTableClass()) + SQLConsts.SQL_AS + alias.getAliasName() + Strings.SPACE;
 		StringBuilder s = new StringBuilder();
-		s.append(SQLConsts.SQL_LEFT_JOIN).append(MyBatisPlusHelper.getTableName(relationClass)).append(SQLConsts.SQL_ON);
-		String condtion = this.conditions.stream().map(c -> c.toSQL()).collect(Collectors.joining());
+		s.append(SQLConsts.SQL_LEFT_JOIN).append(tableName).append(SQLConsts.SQL_ON);
+		String condtion = this.conditions.stream().map(QueryPart::toSQL).collect(Collectors.joining());
 		s.append(condtion);
 		return s.toString();
 	}

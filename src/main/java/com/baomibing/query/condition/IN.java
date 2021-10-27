@@ -15,11 +15,14 @@
  */
 package com.baomibing.query.condition;
 
-import java.util.Collection;
-
 import com.baomibing.query.SQLQuery;
+import com.baomibing.query.constant.Strings;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+
+import java.util.Collection;
+
 /**
  * SQL in condition
  * 
@@ -28,20 +31,71 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  */
 public class IN extends ACondition {
 
-	public  IN(SFunction<?, ?> propertyFunction, Collection<?> value) {
+	public IN(SFunction<?, ?> propertyFunction, Collection<?> value) {
 		this.selectablePart = new Field<>(propertyFunction);
 		this.operator = Operator.IN.getOp();
 		this.value = value;
 	}
-	
+
 	public IN(SFunction<?, ?> propertyFunction, SQLQuery query) {
 		this.selectablePart = new Field<>(propertyFunction);
 		this.operator = Operator.IN.getOp();
 		this.value = query;
 	}
+
+	public IN(boolean beTrue, SFunction<?, ?> propertyFunction, Collection<?> value) {
+		if (beTrue) {
+			this.selectablePart = new Field<>(propertyFunction);
+			this.operator = Operator.IN.getOp();
+			this.value = value;
+		}
+		this.beTrue = beTrue;
+	}
+
+	public IN(boolean beTrue, SFunction<?, ?> propertyFunction, SQLQuery query) {
+		if (beTrue) {
+			this.selectablePart = new Field<>(propertyFunction);
+			this.operator = Operator.IN.getOp();
+			this.value = query;
+		}
+		this.beTrue = beTrue;
+	}
 	
+	public IN(Alias alias, Collection<?> value) {
+		this.selectablePart = alias;
+		this.operator = Operator.IN.getOp();
+		this.value = value;
+	}
+	
+	public IN(Alias alias, SQLQuery query) {
+		this.selectablePart = alias;
+		this.operator = Operator.IN.getOp();
+		this.value = query;
+	}
+	
+	public IN(boolean beTrue, Alias alias, Collection<?> value) {
+    if (beTrue) {
+      this.selectablePart = alias;
+      this.operator = Operator.IN.getOp();
+      this.value = value;
+		}
+    this.beTrue = beTrue;
+	}
+	
+	public IN(boolean beTrue, Alias alias, SQLQuery query) {
+    if (beTrue) {
+      this.selectablePart = alias;
+      this.operator = Operator.IN.getOp();
+      this.value = query;
+		}
+    this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
 		StringBuilder s = new StringBuilder();
 		s.append(selectablePart.toSQL()).append(OP_IN).append("(").append(displayValue(value)).append(")");
 		return s.toString();

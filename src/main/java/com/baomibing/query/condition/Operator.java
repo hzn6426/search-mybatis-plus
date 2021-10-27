@@ -19,8 +19,8 @@ import lombok.Getter;
 
 public enum Operator {
 	
-	EQ(0), NOT_EQ(1), LT(2), GT(3), LTE(4), GTE(5), IN(6), NOT_IN(7), IS_NULL(8), NOT_NULL(9), AND(10), OR(11),  BETWEEN(12), TRUE(13), FLASE(14), LIKE(15), EXIST(16), NOT_EXISTS(17);
-	
+	EQ(0), NOT_EQ(1), LT(2), GT(3), LTE(4), GTE(5), IN(6), NOT_IN(7), IS_NULL(8), NOT_NULL(9), AND(10), OR(11),  BETWEEN(12), TRUE(13), FLASE(14), LIKE(15), EXIST(16), NOT_EXISTS(17),
+	PLUS(18), SUB(19), MUL(20), DIV(21), MOD(22), POW(23);
 	@Getter
 	private int op;
 	

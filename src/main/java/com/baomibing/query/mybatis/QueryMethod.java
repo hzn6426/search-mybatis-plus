@@ -45,6 +45,9 @@ public abstract class QueryMethod extends AbstractMethod {
 	
 	protected final String QUERY_WRAPPER_LIMIT_OFFSET = QUERY_WRAPPER + Strings.DOT + "limitOffsetPart";
 	
+	protected final String QUERY_WRAPPER_SET = QUERY_WRAPPER + Strings.DOT + "setPart";
+	
+	protected final String QUERY_WRAPPER_LIMIT = QUERY_WRAPPER + Strings.DOT + "limitPart";
 	
 	protected String convertIfQwParam(final String param, final boolean newLine) {
         return SqlScriptUtils.convertIf(SqlScriptUtils.unSafeParam(param),
@@ -83,6 +86,9 @@ public abstract class QueryMethod extends AbstractMethod {
 		return convertIfQwParam(QUERY_WRAPPER_LIMIT_OFFSET, true);
 	}
 	
+	protected String set() {return convertIfQwParam(QUERY_WRAPPER_SET, true);}
+	
+	protected String limit() {return convertIfQwParam(QUERY_WRAPPER_LIMIT, true);}
 	
 	protected String convertChooseQwSelect(final String otherwise) {
         return SqlScriptUtils.convertChoose(String.format("%s != null and %s != null", QUERY_WRAPPER, QUERY_WRAPPER_SELECT),

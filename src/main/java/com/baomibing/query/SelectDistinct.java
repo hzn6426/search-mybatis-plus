@@ -15,11 +15,12 @@
  */
 package com.baomibing.query;
 
-import java.util.stream.Collectors;
-
 import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.SQLFunction;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
+
+import java.util.stream.Collectors;
 /**
  * SQL select distinct part
  * 
@@ -27,6 +28,10 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * @since 1.0.0
  */
 public class SelectDistinct extends Select {
+	
+	public SelectDistinct(Alias... aliases) {
+		super(aliases);
+	}
 
 	public SelectDistinct(SQLFunction... sqlFunctions) {
 		super(sqlFunctions);

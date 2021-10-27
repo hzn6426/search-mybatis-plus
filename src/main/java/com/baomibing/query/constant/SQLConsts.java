@@ -34,7 +34,7 @@ public abstract class SQLConsts {
 	public static final String SQL_NOT_IN = "NOT IN";
 	
 	//=======================================================================//
-	//                        SQL Keyword Constants                              //
+	//                        SQL Keyword Constants                          //
 	//=======================================================================//
 	public static final String SQL_SELECT = "SELECT ";
 	
@@ -49,6 +49,8 @@ public abstract class SQLConsts {
 	public static final String SQL_JOIN = " JOIN ";
 	
 	public static final String SQL_ON = " ON ";
+	
+	public static final String SQL_SET = " SET ";
 	
 	public static final String SQL_LEFT_JOIN = " LEFT JOIN ";
 	
@@ -76,23 +78,35 @@ public abstract class SQLConsts {
 	
 	public static final String SQL_OFFSET = " OFFSET ";
 	
+	public static final String SQL_UPDATE = " UPDATE ";
+	
+	public static final String SQL_DELETE = " DELETE ";
+	
 	
 	//=======================================================================//
 	//                        SQL function Constants                         //
 	//=======================================================================//
-	public static final String FUN_SUM = " SUM({0})";
+	public static final String FUN_SUM = " SUM({0}) ";
 	
-	public static final String FUN_COUNT = " COUNT({0})";
+	public static final String FUN_COUNT = " COUNT({0}) ";
 	
-	public static final String FUN_MAX = " MAX({0})";
+	public static final String FUN_MAX = " MAX({0}) ";
 	
-	public static final String FUN_MIN = " MIN({0})";
+	public static final String FUN_MIN = " MIN({0}) ";
 	
-	public static final String FUN_AVG = " AVG({0})";
+	public static final String FUN_AVG = " AVG({0}) ";
 	
-	public static final String FUN_WHEN_THEN = " WHEN {0} THEN {1}";
+	public static final String FUN_WHEN_THEN = " WHEN {0} THEN {1} ";
 	
-	public static final String FUN_CASE_ELSE = "CASE {0} ELSE {1} END";
+	public static final String FUN_CASE_ELSE = " CASE {0} ELSE {1} END ";
 	
-	public static final String FUN_LIMIT_OFFSET = "LIMIT {0} OFFSET {1}";
+	public static final String FUN_LIMIT_OFFSET = " LIMIT {0} OFFSET {1} ";
+	
+	public static final String FUN_LIMIT = " LIMIT {0} ";
+	
+	public static final String FUN_POW = " pow({0},{1}) ";
+	
+	public static final String FUN_MOD = " mod({0,{1}) ";
+	
+	public static final String FUN_CONCAT = " CONCAT({0},{1},{2}) ";
 }

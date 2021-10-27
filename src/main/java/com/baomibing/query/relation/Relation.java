@@ -15,12 +15,11 @@
  */
 package com.baomibing.query.relation;
 
-import java.util.List;
-
 import com.baomibing.query.QueryPart;
 import com.baomibing.query.condition.ACondition;
-
 import lombok.Getter;
+
+import java.util.List;
 /**
  * JOIN relation
  * 
@@ -35,6 +34,8 @@ public abstract class Relation implements QueryPart {
 	protected List<ACondition> conditions;
 	
 	protected int operator;
+	
+	protected boolean beTrue = true;
 	
 	
 	

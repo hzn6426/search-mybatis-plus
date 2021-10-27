@@ -15,16 +15,21 @@
  */
 package com.baomibing.query.condition;
 
+import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.constant.Strings;
+import com.baomibing.query.helper.InnerHelper;
+import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 /**
  * SQL like condition(like '%xxx')
  * 
- * 
  * @author zening
  * @since 1.0.0
  */
 public class LLIKE extends ACondition {
+	
+	private boolean beValueFun = false;
 	
 	public  LLIKE(SFunction<?, ?> propertyFunction, String value) {
 		this.selectablePart = new Field<>(propertyFunction);
@@ -32,10 +37,58 @@ public class LLIKE extends ACondition {
 		this.value = value;
 	}
 
+	public LLIKE(boolean beTrue, SFunction<?, ?> propertyFunction, String value) {
+		if (beTrue) {
+			this.selectablePart = new Field<>(propertyFunction);
+			this.operator = Operator.LIKE.getOp();
+			this.value = value;
+		}
+		this.beTrue = beTrue;
+	}
+	
+	public  LLIKE(Alias alias1, Alias alias2) {
+		this.selectablePart = alias1;
+		this.operator = Operator.LIKE.getOp();
+		this.value = alias2;
+		this.beValueFun = true;
+	}
+	
+	public LLIKE(Alias alias, String value) {
+		this.selectablePart = alias;
+		this.operator = Operator.LIKE.getOp();
+		this.value = value;
+	}
+	
+	public  LLIKE(boolean beTrue, Alias alias1, Alias alias2) {
+		if (beTrue) {
+			this.selectablePart = alias1;
+			this.operator = Operator.LIKE.getOp();
+			this.value = alias2;
+			this.beValueFun = true;
+		}
+		this.beTrue = beTrue;
+	}
+	
+	public LLIKE(boolean beTrue, Alias alias, String value) {
+		if (beTrue) {
+			this.selectablePart = alias;
+			this.operator = Operator.LIKE.getOp();
+			this.value = value;
+		}
+		this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
 		StringBuilder s = new StringBuilder();
-		s.append(selectablePart.toSQL()).append(OP_LIKE).append("'%").append(value).append("'");
+		if (beValueFun) {
+			s.append(selectablePart.toSQL()).append(OP_LIKE).append(InnerHelper.format(SQLConsts.FUN_CONCAT, "'%'", displayValue(value),""));
+    } else {
+      s.append(selectablePart.toSQL()).append(OP_LIKE).append("'%").append(value).append("'");
+		}
 		return s.toString();
 	}
 

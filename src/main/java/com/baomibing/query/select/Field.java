@@ -35,6 +35,11 @@ public class Field<T> extends FieldPart implements Type<T> {
 		columnName = MyBatisPlusHelper.columnToString(columnFun);
 	}
 	
+	public Field(SFunction<T, ?> fun, String tableAlias) {
+		this.columnFun = fun;
+		columnName = MyBatisPlusHelper.columnToString(columnFun, tableAlias);
+	}
+	
 	public Field(String field) {
 		columnName = field;
 	}

@@ -16,27 +16,49 @@
 package com.baomibing.query;
 
 
+import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.constant.Strings;
 import com.baomibing.query.helper.MyBatisPlusHelper;
+import com.baomibing.query.select.Alias;
 
 import lombok.Getter;
+
 /**
  * SQL from part
  * 
  * @author zening
- * @since 1.0.0
+ * @since 1.0.1
  */
 @Getter
 public class From  implements QueryPart {
 	
 	private Class<?> relationClass;
 
+	private SQLQuery sqlQuery = null;
+	
+	private Alias alias;
+
 	public From(Class<?> clazz) {
 		this.relationClass = clazz;
 	}
 
+	public From(SQLQuery query) {
+		sqlQuery = query;
+	}
+	
+	public From(Alias alias) {
+		this.alias = alias;
+		this.relationClass = alias.getTableClass();
+	}
+	
 	@Override
 	public String toSQL() {
-//		return SQLConsts.SQL_FROM +  MyBatisPlusHelper.getTableName(relationClass);
+		if (sqlQuery != null) {
+			return Strings.LEFT_BRACKET + sqlQuery.toSQL() + Strings.RIGHT_BRACKET;
+		}
+		if (alias != null) {
+			return MyBatisPlusHelper.getTableName(relationClass) + SQLConsts.SQL_AS + alias.getAliasName() + Strings.SPACE;
+		}
 		return  MyBatisPlusHelper.getTableName(relationClass);
 	}
 }

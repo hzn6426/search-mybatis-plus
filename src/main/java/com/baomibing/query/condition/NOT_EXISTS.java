@@ -18,6 +18,7 @@ package com.baomibing.query.condition;
 import com.baomibing.query.SQLQuery;
 import com.baomibing.query.constant.SQLConsts;
 import com.baomibing.query.constant.Strings;
+
 /**
  * SQL not exists condition
  * 
@@ -31,10 +32,20 @@ public class NOT_EXISTS extends ACondition {
 		this.value = queryer;
 	}
 
+	public <T1> NOT_EXISTS(boolean beTrue, SQLQuery queryer) {
+		if (beTrue) {
+			this.operator = Operator.EXIST.getOp();
+			this.value = queryer;
+		}
+		this.beTrue = beTrue;
+	}
+
 	@Override
 	public String toSQL() {
-		return SQLConsts.SQL_NOT_EXISTS + Strings.LEFT_BRACKET + ((SQLQuery)this.value).toSQL() + Strings.RIGHT_BRACKET;
+		if (!beTrue) {
+			return Strings.EMPTY;
+		}
+		return SQLConsts.SQL_NOT_EXISTS + Strings.LEFT_BRACKET + ((SQLQuery) this.value).toSQL() + Strings.RIGHT_BRACKET;
 	}
-	
-	
+
 }

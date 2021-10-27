@@ -13,7 +13,7 @@
  * License for the specific language governing permissions and limitations under
  * the License.
  */
-package com.baomibing.query;
+package com.baomibing.query.sql;
 
 import lombok.Getter;
 /**

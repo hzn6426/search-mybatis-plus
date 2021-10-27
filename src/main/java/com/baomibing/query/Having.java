@@ -15,12 +15,14 @@
  */
 package com.baomibing.query;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
 import com.baomibing.query.condition.ACondition;
+import com.baomibing.query.condition.AND;
 import com.baomibing.query.constant.SQLConsts;
 import com.google.common.collect.Lists;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 /**
  * SQL having part
  * 
@@ -32,8 +34,10 @@ public class Having implements QueryPart {
 	
 	public Having(ACondition... conditions) {
 		this.conditions = Lists.newArrayList();
-		for(ACondition c : conditions) {
-			this.conditions.add(c);
+		if (conditions != null && conditions.length > 1) {
+			this.conditions.add(new AND(conditions));
+		} else {
+			this.conditions.addAll(Arrays.asList(conditions));
 		}
 	}
 	

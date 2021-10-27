@@ -74,7 +74,10 @@ public class ResultInterceptor extends AbstractSqlParserHandler implements Inter
         }
 		HashMap<String, Object> paramterObject = (HashMap<String, Object>)bindSql.getParameterObject();
 		Object qwBindParam = paramterObject.get(ParameterConsts.QUERY_WRAPPER);
-		Object clazzBinParam = paramterObject.get(ParameterConsts.QUERY_TO_CLASS);
+		Object clazzBinParam = null;
+		if (paramterObject.containsKey(ParameterConsts.QUERY_TO_CLASS)) {
+			clazzBinParam = paramterObject.get(ParameterConsts.QUERY_TO_CLASS);
+		}
 		if (qwBindParam instanceof SQLQuery) {
 			SQLQuery queryer = (SQLQuery)qwBindParam;
 			Class<?> clazz = clazzBinParam == null ? queryer.getFromClass() : (Class<?>) clazzBinParam;
