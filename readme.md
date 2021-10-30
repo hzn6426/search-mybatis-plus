@@ -29,12 +29,14 @@ search-mybatis-plus 是一款查询辅助工具包，以编程的方式模拟SQL
  ```java
 	<groupId>com.baomibing</groupId>
 	<artifactId>search-mybatis-plus</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
  ```
  * Mapper继承QBaseMapper(必须)
  * service实现类实现SQLQueryService(可选),该接口包含条件的构建方法
  * 构建SQLQuery
  * 调用QBaseMapper中方法查询数据
+
+具体例子请参考：https://gitee.com/ifrog/search-mybatis-plus-example
 
 ### 查询样例1
 ```java
@@ -172,7 +174,7 @@ Alias alias1 = new Alias(SysGroup.class, "g1");
 Alias alias2 = new Alias(SysGroup.class, "g2");
 query.selectDistinct(alias2.Fields(SysGroup::getId, SysGroup::getGroupLevel, SysGroup::getGroupName))
     .from(alias1)
-    .leftJoin(alias2, and(like(alias1.Fields(SysGroup::getParentId), alias2.Fields(SysGroup::getId)), eq(alias2.Fields(SysGroup::getGroupLevel), 1)))
+    .leftJoin(alias2, like(alias1.Fields(SysGroup::getParentId), alias2.Fields(SysGroup::getId)), eq(alias2.Fields(SysGroup::getGroupLevel), 1))
     .where(eq(alias1.Fields(SysGroup::getId), "R0101"));
 ```
 生成的SQL为

@@ -77,7 +77,7 @@ public class CTMCondition extends ACondition {
 	public <T> CTMCondition(boolean beTrue, String sql, SFunction<T, ?> propertyFunction, Object... args) {
 		if (beTrue) {
 			String column = new Field<T>(propertyFunction).toSQL();
-			ArrayUtils.add(args, column);
+			args = ArrayUtils.add(args, column);
 			funSQL = InnerHelper.format(sql, args);
 		}
 		this.beTrue = beTrue;
@@ -86,7 +86,7 @@ public class CTMCondition extends ACondition {
 	public <T> CTMCondition(boolean beTrue, String sql, Alias alias, Object... args) {
 		if (beTrue) {
 			String column = alias.toSQL();
-			ArrayUtils.add(args, column);
+			args = ArrayUtils.add(args, column);
 			funSQL = InnerHelper.format(sql, args);
 		}
 		this.beTrue = beTrue;

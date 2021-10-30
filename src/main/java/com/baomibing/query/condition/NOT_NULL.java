@@ -18,6 +18,8 @@ package com.baomibing.query.condition;
 import com.baomibing.query.constant.Strings;
 import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
+import com.baomibing.query.select.FieldPart;
+import com.baomibing.query.select.SelectablePart;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 /**
@@ -27,31 +29,37 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  * @since 1.0.0
  */
 public class NOT_NULL extends ACondition {
-
-	public NOT_NULL(SFunction<?, ?> propertyFunction) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.NOT_NULL.getOp();
-	}
-
-	public NOT_NULL(boolean beTrue, SFunction<?, ?> propertyFunction) {
+	
+	private NOT_NULL(SelectablePart field, boolean beTrue) {
 		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
+			this.selectablePart = field;
 			this.operator = Operator.NOT_NULL.getOp();
 		}
 		this.beTrue = beTrue;
+	}
+	
+	public NOT_NULL(FieldPart field) {
+		this(field, true);
+	}
+	
+	public NOT_NULL(boolean beTrue, FieldPart field) {
+		this(field, beTrue);
+	}
+	
+	public NOT_NULL(SFunction<?, ?> propertyFunction) {
+		this(new Field<>(propertyFunction), true);
+	}
+	
+	public NOT_NULL(boolean beTrue, SFunction<?, ?> propertyFunction) {
+		this(new Field<>(propertyFunction), beTrue);
 	}
 	
 	public NOT_NULL(Alias alias) {
-		this.selectablePart = alias;
-		this.operator = Operator.NOT_NULL.getOp();
+		this(alias,true);
 	}
 	
 	public NOT_NULL(boolean beTrue, Alias alias) {
-		if (beTrue) {
-			this.selectablePart = alias;
-			this.operator = Operator.NOT_NULL.getOp();
-		}
-		this.beTrue = beTrue;
+		this(alias, beTrue);
 	}
 
 	@Override

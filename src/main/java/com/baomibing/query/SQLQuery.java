@@ -15,19 +15,23 @@
  */
 package com.baomibing.query;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import com.baomibing.query.condition.ACondition;
 import com.baomibing.query.constant.SQLConsts;
 import com.baomibing.query.constant.Strings;
-import com.baomibing.query.relation.*;
+import com.baomibing.query.relation.CrossJoin;
+import com.baomibing.query.relation.InnerJoin;
+import com.baomibing.query.relation.LeftJoin;
+import com.baomibing.query.relation.Relation;
+import com.baomibing.query.relation.RightJoin;
 import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.DISTINCT;
-import com.baomibing.query.select.SQLFunction;
+import com.baomibing.query.select.SelectablePart;
 import com.baomibing.query.sql.QueryerSQL;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.google.common.collect.Lists;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 /**
  * Common SQL Query
@@ -69,6 +73,13 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 		return this;
 	}
 	
+	public SQLQuery from(SQLQuery query, String alias) {
+		from = new From(query, alias);
+		this.fromPart = from.toSQL();
+		fromClass = from.getRelationClass();
+		return this;
+	}
+	
 	public SQLQuery from(Alias alias) {
 		from = new From(alias);
 		this.fromPart = from.toSQL();
@@ -88,121 +99,127 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 		return this;
 	}
 	
-	public SQLQuery select(Alias... aliases) {
-		this.selector = new Select(aliases);
+	public SQLQuery select(SelectablePart... selectableParts) {
+		this.selector = new Select(selectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
-	public SQLQuery select(SQLFunction... sqlFunctions) {
-		this.selector = new Select(sqlFunctions);
+//	public SQLQuery select(Alias... aliases) {
+//		this.selector = new Select(aliases);
+//		this.selectPart = selector.toSQL();
+//		return this;
+//	}
+//
+//	public SQLQuery select(SQLFunction... sqlFunctions) {
+//		this.selector = new Select(sqlFunctions);
+//		this.selectPart = selector.toSQL();
+//		return this;
+//	}
+
+	public <T1> SQLQuery select(SFunction<T1, ?> fun, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
-	public <T1> SQLQuery select(SFunction<T1, ?> fun, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun, sqlFunctions);
+	public <T1, T2> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
-	public <T1, T2> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, sqlFunctions);
+	public <T1, T2, T3> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
-	public <T1, T2, T3> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, sqlFunctions);
-		this.selectPart = selector.toSQL();
-		return this;
-	}
-
-	public <T1, T2, T3, T4> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, sqlFunctions);
+	public <T1, T2, T3, T4> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
-			SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, sqlFunctions);
+			SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
-			SFunction<T6, ?> fun6, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, sqlFunctions);
+			SFunction<T6, ?> fun6, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
-			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, sqlFunctions);
+			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
-			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, sqlFunctions);
+			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
-			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, sqlFunctions);
+			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
-			SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, sqlFunctions);
+			SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11,
-			SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, sqlFunctions);
+			SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11,
-			SFunction<T12, ?> fun12, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, sqlFunctions);
+			SFunction<T12, ?> fun12, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11,
-			SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, sqlFunctions);
+			SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11,
-			SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, sqlFunctions);
+			SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
-			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, sqlFunctions);
+			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -210,8 +227,8 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
 			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
-			SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, sqlFunctions);
+			SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -219,8 +236,8 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
 			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
-			SFunction<T17, ?> fun17, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, sqlFunctions);
+			SFunction<T17, ?> fun17, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -228,8 +245,8 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
 			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
-			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, sqlFunctions);
+			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -237,8 +254,8 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15,
-			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, sqlFunctions);
+			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -246,8 +263,9 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> SQLQuery select(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15,
-			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SQLFunction... sqlFunctions) {
-		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20, sqlFunctions);
+			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SelectablePart... SelectableParts) {
+		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20,
+				SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -256,9 +274,9 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15,
 			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SFunction<T21, ?> fun21,
-			SQLFunction... sqlFunctions) {
+			SelectablePart... SelectableParts) {
 		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20, fun21,
-				sqlFunctions);
+				SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -267,128 +285,128 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15,
 			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SFunction<T21, ?> fun21,
-			SFunction<T22, ?> fun22, SQLFunction... sqlFunctions) {
+			SFunction<T22, ?> fun22, SelectablePart... SelectableParts) {
 		this.selector = new Select(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20, fun21, fun22,
-				sqlFunctions);
+				SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 	
-	public <T1> SQLQuery selectDistinct(Alias... aliases) {
-		this.selector = new SelectDistinct(aliases);
+//	public <T1> SQLQuery selectDistinct(Alias... aliases) {
+//		this.selector = new SelectDistinct(aliases);
+//		this.selectPart = selector.toSQL();
+//		return this;
+//	}
+
+	public <T1> SQLQuery selectDistinct(SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
-	public <T1> SQLQuery selectDistinct(SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(sqlFunctions);
+	public <T1> SQLQuery selectDistinct(SFunction<T1, ?> fun, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
-	public <T1> SQLQuery selectDistinct(SFunction<T1, ?> fun, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun, sqlFunctions);
+	public <T1, T2> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
-	public <T1, T2> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, sqlFunctions);
+	public <T1, T2, T3> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
-	public <T1, T2, T3> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, sqlFunctions);
-		this.selectPart = selector.toSQL();
-		return this;
-	}
-
-	public <T1, T2, T3, T4> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, sqlFunctions);
+	public <T1, T2, T3, T4> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
-			SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, sqlFunctions);
+			SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
-			SFunction<T6, ?> fun6, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, sqlFunctions);
+			SFunction<T6, ?> fun6, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
-			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, sqlFunctions);
+			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
-			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, sqlFunctions);
+			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
-			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, sqlFunctions);
+			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
-			SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, sqlFunctions);
+			SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11,
-			SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, sqlFunctions);
+			SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4,
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11,
-			SFunction<T12, ?> fun12, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, sqlFunctions);
+			SFunction<T12, ?> fun12, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
-			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, sqlFunctions);
+			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
-			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, sqlFunctions);
+			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
-			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, sqlFunctions);
+			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -396,8 +414,8 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
 			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
-			SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, sqlFunctions);
+			SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -405,8 +423,8 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
 			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
 			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
-			SFunction<T17, ?> fun17, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, sqlFunctions);
+			SFunction<T17, ?> fun17, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -414,8 +432,8 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15,
-			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SQLFunction... sqlFunctions) {
-		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, sqlFunctions);
+			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SelectablePart... SelectableParts) {
+		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -423,9 +441,9 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15,
-			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SQLFunction... sqlFunctions) {
+			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SelectablePart... SelectableParts) {
 		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19,
-				sqlFunctions);
+				SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -433,9 +451,9 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> SQLQuery selectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15,
-			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SQLFunction... sqlFunctions) {
+			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SelectablePart... SelectableParts) {
 		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20,
-				sqlFunctions);
+				SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -444,9 +462,9 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15,
 			SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SFunction<T21, ?> fun21,
-			SQLFunction... sqlFunctions) {
+			SelectablePart... SelectableParts) {
 		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20, fun21,
-				sqlFunctions);
+				SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}
@@ -455,9 +473,9 @@ public class SQLQuery extends QueryerSQL implements IQuery {
 			SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8,
 			SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SFunction<T14, ?> fun14,
 			SFunction<T15, ?> fun15, SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20,
-			SFunction<T21, ?> fun21, SFunction<T22, ?> fun22, SQLFunction... sqlFunctions) {
+			SFunction<T21, ?> fun21, SFunction<T22, ?> fun22, SelectablePart... SelectableParts) {
 		this.selector = new SelectDistinct(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20, fun21,
-				fun22, sqlFunctions);
+				fun22, SelectableParts);
 		this.selectPart = selector.toSQL();
 		return this;
 	}

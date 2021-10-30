@@ -25,6 +25,7 @@ import com.baomidou.mybatisplus.core.toolkit.sql.SqlScriptUtils;
  * @author zening
  * @since 1.0.0
  */
+@SuppressWarnings("serial")
 public abstract class QueryMethod extends AbstractMethod {
 
 	protected final String QUERY_WRAPPER = ParameterConsts.QUERY_WRAPPER;

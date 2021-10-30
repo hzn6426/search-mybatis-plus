@@ -20,7 +20,9 @@ import com.baomibing.query.expression.Expression;
 import com.baomibing.query.helper.MyBatisPlusHelper;
 import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
+import com.baomibing.query.select.FieldPart;
 import com.baomibing.query.select.SQLFunction;
+import com.baomibing.query.select.SelectablePart;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 /**
@@ -32,118 +34,95 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 public class LT extends ACondition {
 
 	private boolean beValueFun = false;
-
-	public <T> LT(SFunction<T, ?> propertyFunction, Object value) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.LT.getOp();
-		this.value = value;
+	
+	private LT(boolean beTrue, SelectablePart field, Object value, boolean beValueFun) {
+		if (beTrue) {
+			this.selectablePart = field;
+			this.operator = Operator.LT.getOp();
+			this.value = value;
+			this.beValueFun = beValueFun;
+		}
+		this.beTrue = beTrue;
 	}
-
+	
+	public LT(FieldPart field, Object value) {
+		this(true, field, value, true);
+	}
+	
+	public LT(boolean beTrue, FieldPart field, Object value) {
+		this(beTrue, field, value ,true);
+	}
+	
+	public <T1> LT(SFunction<T1, ?> propertyFunction, Object value) {
+		this(true, new Field<>(propertyFunction), value);
+	}
+	
 	public <T1, T2> LT(SFunction<T1, ?> propertyFunction, SFunction<T2, ?> valueFunction) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.LT.getOp();
-		this.value = MyBatisPlusHelper.columnToString(valueFunction);
-		this.beValueFun = true;
+		this(true, new Field<>(propertyFunction), MyBatisPlusHelper.columnToString(valueFunction), false);
 	}
-
+	
+	public <T1, T2> LT(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		this(true, new Field<>(propertyFunction), sqlFunction, true);
+	}
+	
 	public <T1> LT(SQLFunction sqlFunction, Object value) {
-		this.selectablePart = sqlFunction;
-		this.operator = Operator.LT.getOp();
-		this.value = value;
+		this(true, sqlFunction, value, true);
 	}
-
+	
 	public <T1> LT(SQLFunction sqlFunction, SFunction<T1, ?> valueFunction) {
-		this.selectablePart = sqlFunction;
-		this.operator = Operator.LT.getOp();
-		this.value = MyBatisPlusHelper.columnToString(valueFunction);
-		this.beValueFun = true;
+		this(true, sqlFunction, MyBatisPlusHelper.columnToString(valueFunction), false);
 	}
-
-	public <T> LT(boolean beTrue, SFunction<T, ?> propertyFunction, Object value) {
-		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
-			this.operator = Operator.LT.getOp();
-			this.value = value;
-		}
-		this.beTrue = beTrue;
-	}
-
-	public <T1, T2> LT(boolean beTrue, SFunction<T1, ?> propertyFunction, SFunction<T2, ?> valueFunction) {
-		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
-			this.operator = Operator.LT.getOp();
-			this.value = MyBatisPlusHelper.columnToString(valueFunction);
-			this.beValueFun = true;
-		}
-		this.beTrue = beTrue;
-	}
-
-	public <T1> LT(boolean beTrue, SQLFunction sqlFunction, Object value) {
-		if (beTrue) {
-			this.selectablePart = sqlFunction;
-			this.operator = Operator.LT.getOp();
-			this.value = value;
-		}
-		this.beTrue = beTrue;
-	}
-
-	public <T1> LT(boolean beTrue, SQLFunction sqlFunction, SFunction<T1, ?> valueFunction) {
-		if (beTrue) {
-			this.selectablePart = sqlFunction;
-			this.operator = Operator.LT.getOp();
-			this.value = MyBatisPlusHelper.columnToString(valueFunction);
-			this.beValueFun = true;
-		}
-		this.beTrue = beTrue;
+	
+	public <T1> LT(SFunction<T1, ?> propertyFunction, Expression expression) {
+		this(true, new Field<>(propertyFunction), expression, true);
 	}
 	
 	public LT(Alias alias1, Alias alias2) {
-		this.selectablePart = alias1;
-		this.operator = Operator.LT.getOp();
-		this.value = alias2;
-		this.beValueFun = true;
+		this(true, alias1, alias2, true);
 	}
 	
 	public LT(Alias alias, Object value) {
-		this.selectablePart = alias;
-		this.operator = Operator.LT.getOp();
-		this.value = value;
+		this(true, alias, value, true);
 	}
 	
 	public LT(Alias alias, Expression expression) {
-		this.selectablePart = alias;
-		this.operator = Operator.LT.getOp();
-		this.value = expression;
-		this.beValueFun = true;
+		this(true, alias, expression, true);
 	}
 	
 	public LT(boolean beTrue, Alias alias1, Alias alias2) {
-		if (beTrue) {
-			this.selectablePart = alias1;
-			this.operator = Operator.LT.getOp();
-			this.value = alias2;
-			this.beValueFun = true;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, alias1, alias2, true);
 	}
 	
 	public LT(boolean beTrue, Alias alias, Object value) {
-		if (beTrue) {
-			this.selectablePart = alias;
-			this.operator = Operator.LT.getOp();
-			this.value = value;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, alias, value, true);
 	}
 	
 	public LT(boolean beTrue, Alias alias, Expression expression) {
-		if (beTrue) {
-			this.selectablePart = alias;
-			this.operator = Operator.LT.getOp();
-			this.value = expression;
-			this.beValueFun = true;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, alias, expression, true);
+	}
+	
+	public <T1> LT(boolean beTrue, SFunction<T1, ?> propertyFunction, Object value) {
+		this(beTrue, new Field<>(propertyFunction), value, true);
+	}
+	
+	public <T1, T2> LT(boolean beTrue, SFunction<T1, ?> propertyFunction, SFunction<T2, ?> valueFunction) {
+		this(beTrue, new Field<>(propertyFunction), MyBatisPlusHelper.columnToString(valueFunction), false);
+	}
+	
+	public <T1, T2> LT(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		this(beTrue, new Field<>(propertyFunction), sqlFunction, true);
+	}
+	
+	public <T1> LT(boolean beTrue, SQLFunction sqlFunction, Object value) {
+		this(beTrue, sqlFunction, value, true);
+	}
+	
+	public <T1> LT(boolean beTrue, SQLFunction sqlFunction, SFunction<T1, ?> valueFunction) {
+		this(beTrue, sqlFunction, MyBatisPlusHelper.columnToString(valueFunction), false);
+	}
+	
+	public <T1> LT(boolean beTrue, SFunction<T1, ?> propertyFunction, Expression expression) {
+		this(beTrue, new Field<>(propertyFunction), expression, true);
 	}
 
 	@Override
@@ -152,7 +131,7 @@ public class LT extends ACondition {
 			return Strings.EMPTY;
 		}
 		StringBuilder s = new StringBuilder();
-		s.append(selectablePart.toSQL()).append(OP_LT).append(beValueFun ? value : displayValue(value));
+		s.append(selectablePart.toSQL()).append(OP_LT).append(beValueFun ? displayValue(value) : value);
 		return s.toString();
 	}
 }

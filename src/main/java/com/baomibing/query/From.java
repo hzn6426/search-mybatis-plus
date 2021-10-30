@@ -20,8 +20,8 @@ import com.baomibing.query.constant.SQLConsts;
 import com.baomibing.query.constant.Strings;
 import com.baomibing.query.helper.MyBatisPlusHelper;
 import com.baomibing.query.select.Alias;
-
 import lombok.Getter;
+import org.apache.commons.lang3.StringUtils;
 
 /**
  * SQL from part
@@ -36,14 +36,18 @@ public class From  implements QueryPart {
 
 	private SQLQuery sqlQuery = null;
 	
+	private String sqlQueryAlias = "";
+	
 	private Alias alias;
 
 	public From(Class<?> clazz) {
 		this.relationClass = clazz;
 	}
 
-	public From(SQLQuery query) {
+	public From(SQLQuery query, String as) {
 		sqlQuery = query;
+		sqlQueryAlias = as;
+		this.relationClass = query.getFromClass();
 	}
 	
 	public From(Alias alias) {
@@ -54,7 +58,7 @@ public class From  implements QueryPart {
 	@Override
 	public String toSQL() {
 		if (sqlQuery != null) {
-			return Strings.LEFT_BRACKET + sqlQuery.toSQL() + Strings.RIGHT_BRACKET;
+			return Strings.LEFT_BRACKET + sqlQuery.toSQL() + Strings.RIGHT_BRACKET + (StringUtils.isNotBlank(sqlQueryAlias) ? SQLConsts.SQL_AS + sqlQueryAlias : "");
 		}
 		if (alias != null) {
 			return MyBatisPlusHelper.getTableName(relationClass) + SQLConsts.SQL_AS + alias.getAliasName() + Strings.SPACE;

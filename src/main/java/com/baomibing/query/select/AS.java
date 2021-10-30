@@ -18,7 +18,6 @@ package com.baomibing.query.select;
 import com.baomibing.query.SQLQuery;
 import com.baomibing.query.constant.SQLConsts;
 import com.baomibing.query.constant.Strings;
-import com.baomibing.query.helper.InnerHelper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 /**
@@ -32,6 +31,11 @@ public class AS extends SQLFunction {
 	private SelectablePart selectablePart;
 	
 	private String alias;
+
+	public AS(FieldPart field, String alias) {
+		this.selectablePart = field;
+		this.alias = alias;
+	}
 
 	public AS(SQLFunction fun, String alias) {
 		this.selectablePart = fun;
@@ -54,9 +58,9 @@ public class AS extends SQLFunction {
 	public String toSQL() {
 		if (sqlQuery != null) {
 			return Strings.LEFT_BRACKET + sqlQuery.toSQL() + Strings.RIGHT_BRACKET + SQLConsts.SQL_AS
-					+ InnerHelper.displayValue(alias);
+					+ alias;
 		}
-		return  selectablePart.toSQL() + SQLConsts.SQL_AS + InnerHelper.displayValue(alias);
+		return selectablePart.toSQL() + SQLConsts.SQL_AS + alias;
 	}
 	
 	

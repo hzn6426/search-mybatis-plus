@@ -18,6 +18,8 @@ package com.baomibing.query.condition;
 import com.baomibing.query.constant.Strings;
 import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
+import com.baomibing.query.select.FieldPart;
+import com.baomibing.query.select.SelectablePart;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 /**
  * SQL between and Condition
@@ -27,33 +29,39 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
  */
 public class BETWEEN extends ACondition {
 	
+	private BETWEEN(SelectablePart field, Object value1, Object value2, boolean beTrue) {
+		if (beTrue) {
+			this.selectablePart = field;
+			this.operator = Operator.BETWEEN.getOp();
+			this.value = value1;
+			this.value2 = value2;
+		}
+		this.beTrue = beTrue;
+	}
 
-	public  BETWEEN(SFunction<?, ?> propertyFunction, Object value1, Object value2) {
-		this(true, propertyFunction, value1, value2);
+	public <T> BETWEEN(SFunction<T, ?> propertyFunction, Object value1, Object value2) {
+		this(new Field<>(propertyFunction), value1, value2, true);
+	}
+	
+	public  BETWEEN(boolean beTrue, FieldPart field, Object value1, Object value2) {
+		this(field, value1, value2, beTrue);
+	}
+	
+	public  BETWEEN(FieldPart field, Object value1, Object value2) {
+		this(field, value1, value2, true);
 	}
 
 	public BETWEEN(boolean beTrue, SFunction<?, ?> propertyFunction, Object value1, Object value2) {
-		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
-			this.operator = Operator.BETWEEN.getOp();
-			this.value = value1;
-			this.value2 = value2;
-		}
-		this.beTrue = beTrue;
+		
+		this(new Field<>(propertyFunction), value1, value2, beTrue);
 	}
 	
 	public BETWEEN(Alias alias, Object value1, Object value2) {
-		this(true, alias, value1, value2);
+		this(alias, value1, value2, true);
 	}
 	
 	public BETWEEN(boolean beTrue, Alias alias, Object value1, Object value2) {
-		if (beTrue) {
-			this.selectablePart = alias;
-			this.operator = Operator.BETWEEN.getOp();
-			this.value = value1;
-			this.value2 = value2;
-		}
-		this.beTrue = beTrue;
+		this(alias, value1, value2, beTrue);
 	}
 	
 	

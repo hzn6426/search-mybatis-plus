@@ -18,6 +18,7 @@ package com.baomibing.query.helper;
 import com.baomibing.query.SQLQuery;
 import com.baomibing.query.expression.Expression;
 import com.baomibing.query.select.Alias;
+import com.baomibing.query.select.FieldPart;
 import com.baomibing.query.select.SQLFunction;
 import org.apache.commons.lang3.ArrayUtils;
 
@@ -76,6 +77,9 @@ public abstract class InnerHelper {
 		}
 		if (value instanceof Alias) {
 			return ((Alias) value).toSQL();
+		}
+		if (value instanceof FieldPart) {
+			return ((FieldPart) value).toSQL();
 		}
 		if (type.isPrimitive()) {
 			if (value instanceof Boolean) {

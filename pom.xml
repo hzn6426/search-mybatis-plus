@@ -3,7 +3,7 @@
 
 	<groupId>com.baomibing</groupId>
 	<artifactId>search-mybatis-plus</artifactId>
-	<version>1.0.3</version>
+	<version>1.0.4</version>
 	<packaging>jar</packaging>
 
 	<name>search-mybatis-plus</name>
@@ -49,7 +49,7 @@
 		<commons-lang3.version>3.10</commons-lang3.version>
 		<lombok.version>1.18.12</lombok.version>
 		<caffeine.version>2.8.0</caffeine.version>
-		<mybatis-plus-starter.version>3.4.0</mybatis-plus-starter.version>
+		<mybatis-plus-starter.version>3.4.3.4</mybatis-plus-starter.version>
 	</properties>
 
 	<build>

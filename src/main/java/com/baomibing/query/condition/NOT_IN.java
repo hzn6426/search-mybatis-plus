@@ -9,7 +9,7 @@
  * <p>
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
- * WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+ * WARRANTIES OR CONDITIONS OF ANY KNOT_IND, either express or implied. See the
  * License for the specific language governing permissions and limitations under
  * the License.
  */
@@ -19,6 +19,8 @@ import com.baomibing.query.SQLQuery;
 import com.baomibing.query.constant.Strings;
 import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
+import com.baomibing.query.select.FieldPart;
+import com.baomibing.query.select.SelectablePart;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 import java.util.Collection;
@@ -30,65 +32,54 @@ import java.util.Collection;
  * @since 1.0.0
  */
 public class NOT_IN extends ACondition {
-
-	public NOT_IN(SFunction<?, ?> propertyFunction, Collection<?> value) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.NOT_IN.getOp();
-		this.value = value;
-	}
-
-	public NOT_IN(SFunction<?, ?> propertyFunction, SQLQuery query) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.NOT_IN.getOp();
-		this.value = query;
-	}
-
-	public NOT_IN(boolean beTrue, SFunction<?, ?> propertyFunction, Collection<?> value) {
+	
+	private NOT_IN(SelectablePart field, Object value, Boolean beTrue) {
 		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
+			this.selectablePart = field;
 			this.operator = Operator.NOT_IN.getOp();
 			this.value = value;
 		}
 		this.beTrue = beTrue;
 	}
-
+	
+	public NOT_IN(FieldPart field, Collection<?> value) {
+		this( field, value, true);
+	}
+	
+	public NOT_IN(boolean beTrue, FieldPart field, Collection<?> value) {
+		this(field, value , beTrue);
+	}
+	
+	public NOT_IN(SFunction<?, ?> propertyFunction, Collection<?> value) {
+		this(new Field<>(propertyFunction), value, true);
+	}
+	
+	public NOT_IN(SFunction<?, ?> propertyFunction, SQLQuery query) {
+		this(new Field<>(propertyFunction), query, true);
+	}
+	
+	public NOT_IN(boolean beTrue, SFunction<?, ?> propertyFunction, Collection<?> value) {
+		this(new Field<>(propertyFunction), value, beTrue);
+	}
+	
 	public NOT_IN(boolean beTrue, SFunction<?, ?> propertyFunction, SQLQuery query) {
-		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
-			this.operator = Operator.NOT_IN.getOp();
-			this.value = query;
-		}
-		this.beTrue = beTrue;
+		this(new Field<>(propertyFunction), query, beTrue);
 	}
 	
 	public NOT_IN(Alias alias, Collection<?> value) {
-		this.selectablePart = alias;
-		this.operator = Operator.NOT_IN.getOp();
-		this.value = value;
+		this(alias, value, true);
 	}
 	
 	public NOT_IN(Alias alias, SQLQuery query) {
-		this.selectablePart = alias;
-		this.operator = Operator.NOT_IN.getOp();
-		this.value = query;
+		this(alias, query, true);
 	}
 	
 	public NOT_IN(boolean beTrue, Alias alias, Collection<?> value) {
-		if (beTrue) {
-			this.selectablePart = alias;
-			this.operator = Operator.NOT_IN.getOp();
-			this.value = value;
-		}
-		this.beTrue = beTrue;
+		this(alias, value, beTrue);
 	}
 	
 	public NOT_IN(boolean beTrue, Alias alias, SQLQuery query) {
-		if (beTrue) {
-			this.selectablePart = alias;
-			this.operator = Operator.NOT_IN.getOp();
-			this.value = query;
-		}
-		this.beTrue = beTrue;
+		this(alias, query, beTrue);
 	}
 
 	@Override

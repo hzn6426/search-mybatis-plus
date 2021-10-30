@@ -49,6 +49,7 @@ public class Alias extends FieldPart {
         this.aliasName = aliasName;
     }
     
+    
     public <T> Alias Fields(SFunction<T, ?> fun) {
         return Fields(new Field<>(fun, aliasName));
     }
@@ -155,7 +156,7 @@ public class Alias extends FieldPart {
     }
     
     
-    private Alias Fields(FieldPart... parts) {
+    public Alias Fields(FieldPart... parts) {
         List<FieldPart> partsList = Lists.newArrayList();
 //        if (fields == null) {
 //            fields = Lists.newArrayList();

@@ -20,7 +20,9 @@ import com.baomibing.query.constant.Strings;
 import com.baomibing.query.helper.InnerHelper;
 import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
+import com.baomibing.query.select.FieldPart;
 import com.baomibing.query.select.SQLFunction;
+import com.baomibing.query.select.SelectablePart;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 /**
@@ -32,68 +34,56 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 public class LIKE extends ACondition {
 	
 	private boolean beValueFun = false;
-
-	public LIKE(SFunction<?, ?> propertyFunction, String value) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.LIKE.getOp();
-		this.value = value;
-	}
-
-	public <T1> LIKE(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.LIKE.getOp();
-		this.value = sqlFunction;
-	}
-
-	public LIKE(boolean beTrue, SFunction<?, ?> propertyFunction, String value) {
+	
+	private LIKE (boolean beTrue, SelectablePart field, Object value, boolean beValueFun) {
 		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
+			this.selectablePart = field;
 			this.operator = Operator.LIKE.getOp();
 			this.value = value;
+			this.beValueFun = beValueFun;
 		}
 		this.beTrue = beTrue;
 	}
+	
+	public LIKE(FieldPart field, String value) {
+		this(true, field, value, false);
+	}
+	
+	public LIKE(boolean beTrue, FieldPart field, String value) {
+		this(beTrue, field, value, false);
+	}
 
-	public <T1> LIKE(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
-		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
-			this.operator = Operator.LIKE.getOp();
-			this.value = sqlFunction;
-		}
-		this.beTrue = beTrue;
+	public <T> LIKE(SFunction<T, ?> propertyFunction, String value) {
+		this(true, new Field<>(propertyFunction), value, false);
+	}
+
+	public <T> LIKE(SFunction<T, ?> propertyFunction, SQLFunction sqlFunction) {
+		this(true, new Field<>(propertyFunction), sqlFunction, false);
+	}
+
+	public <T> LIKE(boolean beTrue, SFunction<T, ?> propertyFunction, String value) {
+		this(beTrue, new Field<>(propertyFunction), value, false);
+	}
+
+	public <T> LIKE(boolean beTrue, SFunction<T, ?> propertyFunction, SQLFunction sqlFunction) {
+		this(true, new Field<>(propertyFunction), sqlFunction, false);
 	}
 	
 	
 	public  LIKE(Alias alias1, Alias alias2) {
-		this.selectablePart = alias1;
-		this.operator = Operator.LIKE.getOp();
-		this.value = alias2;
-		this.beValueFun = true;
+		this(true, alias1, alias2, true);
 	}
 	
 	public LIKE(Alias alias, String value) {
-		this.selectablePart = alias;
-		this.operator = Operator.LIKE.getOp();
-		this.value = value;
+		this(true, alias, value, false);
 	}
 	
 	public  LIKE(boolean beTrue, Alias alias1, Alias alias2) {
-    if (beTrue) {
-      this.selectablePart = alias1;
-      this.operator = Operator.LIKE.getOp();
-      this.value = alias2;
-      this.beValueFun = true;
-		}
-    this.beTrue = beTrue;
+    this(beTrue, alias1, alias1, true);
 	}
 	
 	public LIKE(boolean beTrue, Alias alias, String value) {
-    if (beTrue) {
-      this.selectablePart = alias;
-      this.operator = Operator.LIKE.getOp();
-      this.value = value;
-		}
-    this.beTrue = beTrue;
+		this(beTrue, alias, value, false);
 	}
 
 	@Override

@@ -1,22 +1,23 @@
 package com.baomibing.query.helper;
 
+import static java.util.Locale.ENGLISH;
+
+import java.util.concurrent.TimeUnit;
+
+import org.apache.ibatis.reflection.property.PropertyNamer;
+import org.checkerframework.checker.nullness.qual.NonNull;
+import org.checkerframework.checker.nullness.qual.Nullable;
+
 import com.baomibing.query.constant.Strings;
 import com.baomidou.mybatisplus.core.metadata.TableInfo;
 import com.baomidou.mybatisplus.core.metadata.TableInfoHelper;
 import com.baomidou.mybatisplus.core.toolkit.LambdaUtils;
 import com.baomidou.mybatisplus.core.toolkit.support.ColumnCache;
+import com.baomidou.mybatisplus.core.toolkit.support.LambdaMeta;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-import com.baomidou.mybatisplus.core.toolkit.support.SerializedLambda;
 import com.github.benmanes.caffeine.cache.CacheLoader;
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
-import org.apache.ibatis.reflection.property.PropertyNamer;
-import org.checkerframework.checker.nullness.qual.NonNull;
-import org.checkerframework.checker.nullness.qual.Nullable;
-
-import java.util.concurrent.TimeUnit;
-
-import static java.util.Locale.ENGLISH;
 /**
  * mybatis-plus tool
  * @see com.baomidou.mybatisplus.core.conditions.AbstractLambdaWrapper
@@ -37,16 +38,28 @@ public abstract class MyBatisPlusHelper {
 		});
 	
 	public static <T> Class<?> getClass(SFunction<?, ?> column) {
-		SerializedLambda lambda = LambdaUtils.resolve(column);
-		Class<?> aClass = lambda.getInstantiatedType();
-		return aClass;
+//		SerializedLambda lambda = LambdaUtils.resolve(column);
+//		Class<?> aClass = lambda.getInstantiatedType();
+
+		// mybatis-plus v3.4.3.4
+		LambdaMeta meta = LambdaUtils.extract(column);
+		Class<?> instantiatedClass = meta.getInstantiatedClass();
+		return instantiatedClass;
 	}
 
 	public static <T> String columnToString(SFunction<?, ?> column) {
-		SerializedLambda lambda = LambdaUtils.resolve(column);
-		Class<?> aClass = lambda.getInstantiatedType();
-		String fieldName = PropertyNamer.methodToProperty(lambda.getImplMethodName());
-		TableInfo info = TableInfoHelper.getTableInfo(aClass);
+		// mybatis-plus v3.4.0
+//		SerializedLambda lambda = LambdaUtils.resolve(column);
+//		Class<?> aClass = lambda.getInstantiatedType();
+//		String fieldName = PropertyNamer.methodToProperty(lambda.getImplMethodName());
+
+		// mybatis-plus v3.4.3.4
+		LambdaMeta meta = LambdaUtils.extract(column);
+		String fieldName = PropertyNamer.methodToProperty(meta.getImplMethodName());
+		Class<?> instantiatedClass = meta.getInstantiatedClass();
+
+//		
+		TableInfo info = TableInfoHelper.getTableInfo(instantiatedClass);
 		String tableName = info.getTableName();
 		ColumnCache columnCache = cache.get(formatKey(tableName + Strings.DOT + fieldName));
 		if (columnCache == null) {
@@ -56,11 +69,17 @@ public abstract class MyBatisPlusHelper {
 		return tableName + Strings.DOT + "`" + columnCache.getColumn() + "`";
 	}
 	
+
 	public static <T> String columnToString(SFunction<?, ?> column, String tableAlias) {
-		SerializedLambda lambda = LambdaUtils.resolve(column);
-		Class<?> aClass = lambda.getInstantiatedType();
-		String fieldName = PropertyNamer.methodToProperty(lambda.getImplMethodName());
-		TableInfo info = TableInfoHelper.getTableInfo(aClass);
+//		SerializedLambda lambda = LambdaUtils.resolve(column);
+//		Class<?> aClass = lambda.getInstantiatedType();
+//		String fieldName = PropertyNamer.methodToProperty(lambda.getImplMethodName());
+
+		// mybatis-plus v3.4.3.4
+		LambdaMeta meta = LambdaUtils.extract(column);
+		String fieldName = PropertyNamer.methodToProperty(meta.getImplMethodName());
+		Class<?> instantiatedClass = meta.getInstantiatedClass();
+		TableInfo info = TableInfoHelper.getTableInfo(instantiatedClass);
 		String tableName = info.getTableName();
 		ColumnCache columnCache = cache.get(formatKey(tableName + Strings.DOT + fieldName));
 		if (columnCache == null) {
@@ -85,8 +104,10 @@ public abstract class MyBatisPlusHelper {
 	}
 	
 	public static String getTableName(SFunction<?, ?> column) {
-		SerializedLambda lambda = LambdaUtils.resolve(column);
-		Class<?> clazz = lambda.getInstantiatedType();
+//		SerializedLambda lambda = LambdaUtils.resolve(column);
+//		Class<?> clazz = lambda.getInstantiatedType();
+
+		Class<?> clazz = getClass(column);
 		return getTableName(clazz);
 	}
 	

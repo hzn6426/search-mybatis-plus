@@ -18,8 +18,7 @@ package com.baomibing.query.condition;
 import com.baomibing.query.constant.SQLConsts;
 import com.baomibing.query.constant.Strings;
 import com.baomibing.query.helper.InnerHelper;
-import com.baomibing.query.select.Alias;
-import com.baomibing.query.select.Field;
+import com.baomibing.query.select.*;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 /**
@@ -31,52 +30,56 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 public class RLIKE extends ACondition {
 	
 	private boolean beValueFun = false;
-
-	public RLIKE(SFunction<?, ?> propertyFunction, String value) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.LIKE.getOp();
-		this.value = value;
-	}
-
-	public RLIKE(boolean beTrue, SFunction<?, ?> propertyFunction, String value) {
+	
+	private RLIKE (boolean beTrue, SelectablePart field, Object value, boolean beValueFun) {
 		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
+			this.selectablePart = field;
 			this.operator = Operator.LIKE.getOp();
 			this.value = value;
+			this.beValueFun = beValueFun;
 		}
 		this.beTrue = beTrue;
 	}
 	
+	public RLIKE(FieldPart field, String value) {
+		this(true, field, value, false);
+	}
+	
+	public RLIKE(boolean beTrue, FieldPart field, String value) {
+		this(beTrue, field, value, false);
+	}
+	
+	public <T> RLIKE(SFunction<T, ?> propertyFunction, String value) {
+		this(true, new Field<>(propertyFunction), value, false);
+	}
+	
+	public <T1> RLIKE(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		this(true, new Field<>(propertyFunction), sqlFunction, false);
+	}
+	
+	public <T> RLIKE(boolean beTrue, SFunction<T, ?> propertyFunction, String value) {
+		this(beTrue, new Field<>(propertyFunction), value, false);
+	}
+	
+	public <T1> RLIKE(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		this(true, new Field<>(propertyFunction), sqlFunction, false);
+	}
+	
+	
 	public  RLIKE(Alias alias1, Alias alias2) {
-		this.selectablePart = alias1;
-		this.operator = Operator.LIKE.getOp();
-		this.value = alias2;
-		this.beValueFun = true;
+		this(true, alias1, alias2, true);
 	}
 	
 	public RLIKE(Alias alias, String value) {
-		this.selectablePart = alias;
-		this.operator = Operator.LIKE.getOp();
-		this.value = value;
+		this(true, alias, value, false);
 	}
 	
 	public  RLIKE(boolean beTrue, Alias alias1, Alias alias2) {
-		if (beTrue) {
-			this.selectablePart = alias1;
-			this.operator = Operator.LIKE.getOp();
-			this.value = alias2;
-			this.beValueFun = true;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, alias1, alias1, true);
 	}
 	
 	public RLIKE(boolean beTrue, Alias alias, String value) {
-		if (beTrue) {
-			this.selectablePart = alias;
-			this.operator = Operator.LIKE.getOp();
-			this.value = value;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, alias, value, false);
 	}
 
 	@Override

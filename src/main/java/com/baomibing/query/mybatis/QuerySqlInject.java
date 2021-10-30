@@ -19,6 +19,7 @@ import java.util.List;
 
 import com.baomidou.mybatisplus.core.injector.AbstractMethod;
 import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
+import com.baomidou.mybatisplus.core.metadata.TableInfo;
 /**
  * 
  * Inject method in QBaseMapper
@@ -29,8 +30,8 @@ import com.baomidou.mybatisplus.core.injector.DefaultSqlInjector;
 public class QuerySqlInject extends DefaultSqlInjector {
 
 	@Override
-	public List<AbstractMethod> getMethodList(Class<?> mapperClass) {
-		List<AbstractMethod> methodList = super.getMethodList(mapperClass);
+	public List<AbstractMethod> getMethodList(Class<?> mapperClass, TableInfo tableInfo) {
+		List<AbstractMethod> methodList = super.getMethodList(mapperClass, tableInfo);
 		methodList.add(new FetchQuery());
 		methodList.add(new FetchQueryInto());
 		methodList.add(new CountQuery());
@@ -39,5 +40,16 @@ public class QuerySqlInject extends DefaultSqlInjector {
 		return methodList;
 	}
 
+	// mybatis-plus v3.4.0
+//	@Override
+//	public List<AbstractMethod> getMethodList(Class<?> mapperClass) {
+//		List<AbstractMethod> methodList = super.getMethodList(mapperClass);
+//		methodList.add(new FetchQuery());
+//		methodList.add(new FetchQueryInto());
+//		methodList.add(new CountQuery());
+//		methodList.add(new UpdateQuery());
+//		methodList.add(new DeleteQuery());
+//		return methodList;
+//	}
 	
 }

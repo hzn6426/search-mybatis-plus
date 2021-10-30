@@ -26,6 +26,7 @@ import com.baomidou.mybatisplus.core.metadata.TableInfo;
  * @author zening
  * @since 1.0.2
  */
+@SuppressWarnings("serial")
 public class UpdateQuery extends QueryMethod {
 
 	@Override

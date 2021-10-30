@@ -15,16 +15,55 @@
  */
 package com.baomibing.query.mybatis;
 
+import java.util.Collection;
+
 import com.baomibing.query.LimitOffset;
 import com.baomibing.query.SQLDelete;
 import com.baomibing.query.SQLQuery;
 import com.baomibing.query.SQLUpdate;
-import com.baomibing.query.condition.*;
-import com.baomibing.query.expression.*;
-import com.baomibing.query.select.*;
+import com.baomibing.query.condition.ACondition;
+import com.baomibing.query.condition.AND;
+import com.baomibing.query.condition.BETWEEN;
+import com.baomibing.query.condition.CTMCondition;
+import com.baomibing.query.condition.EQ;
+import com.baomibing.query.condition.EXISTS;
+import com.baomibing.query.condition.FalseCondition;
+import com.baomibing.query.condition.GT;
+import com.baomibing.query.condition.GTE;
+import com.baomibing.query.condition.IN;
+import com.baomibing.query.condition.IS_NULL;
+import com.baomibing.query.condition.LIKE;
+import com.baomibing.query.condition.LLIKE;
+import com.baomibing.query.condition.LT;
+import com.baomibing.query.condition.LTE;
+import com.baomibing.query.condition.NOT_EQ;
+import com.baomibing.query.condition.NOT_EXISTS;
+import com.baomibing.query.condition.NOT_IN;
+import com.baomibing.query.condition.NOT_NULL;
+import com.baomibing.query.condition.OR;
+import com.baomibing.query.condition.RLIKE;
+import com.baomibing.query.condition.TrueCondition;
+import com.baomibing.query.expression.ADD;
+import com.baomibing.query.expression.DIVISION;
+import com.baomibing.query.expression.Expression;
+import com.baomibing.query.expression.MOD;
+import com.baomibing.query.expression.MULTIPL;
+import com.baomibing.query.expression.POW;
+import com.baomibing.query.expression.SUBTRACT;
+import com.baomibing.query.select.AS;
+import com.baomibing.query.select.AVG;
+import com.baomibing.query.select.Alias;
+import com.baomibing.query.select.CASE_WHEN;
+import com.baomibing.query.select.COUNT;
+import com.baomibing.query.select.CTMFunction;
+import com.baomibing.query.select.DISTINCT;
+import com.baomibing.query.select.Field;
+import com.baomibing.query.select.FieldPart;
+import com.baomibing.query.select.MAX;
+import com.baomibing.query.select.MIN;
+import com.baomibing.query.select.SQLFunction;
+import com.baomibing.query.select.SUM;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-
-import java.util.Collection;
 
 /**
  * An interface which can be implements in service.
@@ -61,7 +100,13 @@ public interface SQLQueryService {
 	default OR or(boolean beTrue, ACondition... conditions) {
 		return new OR(beTrue, conditions);
 	}
-
+	
+	default <T> Field<T> field(String column) {return new Field<>(column);}
+	
+	default LIKE like(FieldPart field, String value) {return new LIKE(field, value);}
+	
+	default LIKE like(boolean beTrue, FieldPart field, String value) {return new LIKE(beTrue, field, value);}
+	
 	default <T> LIKE like(SFunction<T, ?> propertyFunction, String value) {
 		return new LIKE(propertyFunction, value);
 	}
@@ -93,22 +138,32 @@ public interface SQLQueryService {
 	default <T> LIKE like(boolean beTrue, Alias alias1, Alias alias2) {
 		return new LIKE(beTrue, alias1, alias2);
 	}
+	
+	default <T> LLIKE llike(SFunction<T, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new LLIKE(propertyFunction, sqlFunction);
+	}
 
+	default <T> LLIKE llike(boolean beTrue, SFunction<T, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new LLIKE(beTrue, propertyFunction, sqlFunction);
+	}
+
+	default <T> LLIKE llike(FieldPart field, String value) {
+		return new LLIKE(field, value);
+	}
+	
+	default <T> LLIKE llike(boolean beTrue, FieldPart field, String value) {
+		return new LLIKE(beTrue, field, value);
+	}
+	
 	default <T> LLIKE llike(SFunction<T, ?> propertyFunction, String value) {
 		return new LLIKE(propertyFunction, value);
 	}
-
-	default <T> RLIKE rlike(SFunction<T, ?> propertyFunction, String value) {
-		return new RLIKE(propertyFunction, value);
-	}
+	
 
 	default <T> LLIKE llike(boolean beTrue, SFunction<T, ?> propertyFunction, String value) {
 		return new LLIKE(beTrue, propertyFunction, value);
 	}
 
-	default <T> RLIKE rlike(boolean beTrue, SFunction<T, ?> propertyFunction, String value) {
-		return new RLIKE(beTrue, propertyFunction, value);
-	}
 	
 	default <T> LLIKE llike(Alias alias, String value) {
 		return new LLIKE(alias, value);
@@ -126,6 +181,30 @@ public interface SQLQueryService {
 		return new LLIKE(beTrue, alias1, alias2);
 	}
 	
+	default <T> RLIKE rlike(SFunction<T, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new RLIKE(propertyFunction, sqlFunction);
+	}
+
+	default <T> RLIKE rlike(boolean beTrue, SFunction<T, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new RLIKE(beTrue, propertyFunction, sqlFunction);
+	}
+
+	default <T> RLIKE rlike(FieldPart field, String value) {
+		return new RLIKE(field, value);
+	}
+
+	default <T> RLIKE rlike(boolean beTrue, SFunction<T, ?> propertyFunction, String value) {
+		return new RLIKE(beTrue, propertyFunction, value);
+	}
+
+	default <T> RLIKE rlike(boolean beTrue, FieldPart field, String value) {
+		return new RLIKE(beTrue, field, value);
+	}
+
+	default <T> RLIKE rlike(SFunction<T, ?> propertyFunction, String value) {
+		return new RLIKE(propertyFunction, value);
+	}
+
 	default <T> RLIKE rlike(Alias alias, String value) {
 		return new RLIKE(alias, value);
 	}
@@ -141,7 +220,15 @@ public interface SQLQueryService {
 	default <T> RLIKE rlike(boolean beTrue, Alias alias1, Alias alias2) {
 		return new RLIKE(beTrue, alias1, alias2);
 	}
-
+	
+	default <T> EQ eq(FieldPart field, Object value) {
+		return new EQ(field, value);
+	}
+	
+	default <T> EQ eq(boolean beTrue, FieldPart field, Object value) {
+		return new EQ(beTrue, field, value);
+	}
+	
 	default <T> EQ eq(SFunction<T, ?> propertyFunction, Object value) {
 		return new EQ(propertyFunction, value);
 	}
@@ -213,6 +300,14 @@ public interface SQLQueryService {
 	default  <T1> EQ eq(boolean beTrue, SFunction<T1, ?> propertyFunction, Expression expression) {
 		return new EQ(beTrue, propertyFunction, expression);
 	}
+	
+	default <T> NOT_EQ not_eq(FieldPart field, Object value) {
+		return new NOT_EQ(field, value);
+	}
+	
+	default <T> NOT_EQ not_eq(boolean beTrue, FieldPart field, Object value) {
+		return new NOT_EQ(beTrue, field, value);
+	}
 
 	default <T> NOT_EQ not_eq(SFunction<T, ?> propertyFunction, Object value) {
 		return new NOT_EQ(propertyFunction, value);
@@ -222,12 +317,20 @@ public interface SQLQueryService {
 		return new NOT_EQ(propertyFunction, valueFunction);
 	}
 
+	default <T1> NOT_EQ not_eq(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new NOT_EQ(propertyFunction, sqlFunction);
+	}
+
 	default NOT_EQ not_eq(SQLFunction sqlFunction, Object value) {
 		return new NOT_EQ(sqlFunction, value);
 	}
 
 	default <T> NOT_EQ not_eq(SQLFunction sqlFunction, SFunction<T, ?> valueFunction) {
 		return new NOT_EQ(sqlFunction, valueFunction);
+	}
+
+	default <T1> NOT_EQ not_eq(SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new NOT_EQ(propertyFunction, expression);
 	}
 
 	default <T> NOT_EQ not_eq(boolean beTrue, SFunction<T, ?> propertyFunction, Object value) {
@@ -246,6 +349,14 @@ public interface SQLQueryService {
 		return new NOT_EQ(beTrue, sqlFunction, valueFunction);
 	}
 	
+	default <T1> NOT_EQ not_eq(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new NOT_EQ(beTrue, propertyFunction, sqlFunction);
+	}
+
+	default <T1> NOT_EQ not_eq(boolean beTrue, SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new NOT_EQ(beTrue, propertyFunction, expression);
+	}
+
 	default NOT_EQ not_eq(Alias alias1, Alias alias2) {
 		return new NOT_EQ(alias1, alias2);
 	}
@@ -269,6 +380,15 @@ public interface SQLQueryService {
 	default NOT_EQ not_eq (boolean beTrue, Alias alias, Expression expression) {
 		return new NOT_EQ(beTrue, alias, expression);
 	}
+	
+
+	default <T> GT gt(FieldPart field, Object value) {
+		return new GT(field, value);
+	}
+	
+	default <T> GT gt(boolean beTrue, FieldPart field, Object value) {
+		return new GT(beTrue, field, value);
+	}
 
 	default <T> GT gt(SFunction<T, ?> propertyFunction, Object value) {
 		return new GT(propertyFunction, value);
@@ -278,12 +398,20 @@ public interface SQLQueryService {
 		return new GT(propertyFunction, valueFunction);
 	}
 
+	default <T1> GT gt(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new GT(propertyFunction, sqlFunction);
+	}
+
 	default GT gt(SQLFunction sqlFunction, Object value) {
 		return new GT(sqlFunction, value);
 	}
 
 	default <T> GT gt(SQLFunction sqlFunction, SFunction<T, ?> valueFunction) {
 		return new GT(sqlFunction, valueFunction);
+	}
+
+	default <T1> GT gt(SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new GT(propertyFunction, expression);
 	}
 
 	default <T> GT gt(boolean beTrue, SFunction<T, ?> propertyFunction, Object value) {
@@ -302,6 +430,14 @@ public interface SQLQueryService {
 		return new GT(beTrue, sqlFunction, valueFunction);
 	}
 	
+	default <T1> GT gt(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new GT(beTrue, propertyFunction, sqlFunction);
+	}
+
+	default <T1> GT gt(boolean beTrue, SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new GT(beTrue, propertyFunction, expression);
+	}
+
 	default GT gt(Alias alias1, Alias alias2) {
 		return new GT(alias1, alias2);
 	}
@@ -325,6 +461,15 @@ public interface SQLQueryService {
 	default GT gt (boolean beTrue, Alias alias, Expression expression) {
 		return new GT(beTrue, alias, expression);
 	}
+	
+
+	default <T> GTE gte(FieldPart field, Object value) {
+		return new GTE(field, value);
+	}
+	
+	default <T> GTE gte(boolean beTrue, FieldPart field, Object value) {
+		return new GTE(beTrue, field, value);
+	}
 
 	default <T> GTE gte(SFunction<T, ?> propertyFunction, Object value) {
 		return new GTE(propertyFunction, value);
@@ -334,12 +479,20 @@ public interface SQLQueryService {
 		return new GTE(propertyFunction, valueFunction);
 	}
 
+	default <T1> GTE gte(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new GTE(propertyFunction, sqlFunction);
+	}
+
 	default GTE gte(SQLFunction sqlFunction, Object value) {
 		return new GTE(sqlFunction, value);
 	}
 
 	default <T> GTE gte(SQLFunction sqlFunction, SFunction<T, ?> valueFunction) {
 		return new GTE(sqlFunction, valueFunction);
+	}
+
+	default <T1> GTE gte(SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new GTE(propertyFunction, expression);
 	}
 
 	default <T> GTE gte(boolean beTrue, SFunction<T, ?> propertyFunction, Object value) {
@@ -358,7 +511,15 @@ public interface SQLQueryService {
 		return new GTE(beTrue, sqlFunction, valueFunction);
 	}
 	
-	default GTE gte (Alias alias1, Alias alias2) {
+	default <T1> GTE gte(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new GTE(beTrue, propertyFunction, sqlFunction);
+	}
+
+	default <T1> GTE gte(boolean beTrue, SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new GTE(beTrue, propertyFunction, expression);
+	}
+
+	default GTE gte(Alias alias1, Alias alias2) {
 		return new GTE(alias1, alias2);
 	}
 	
@@ -382,6 +543,14 @@ public interface SQLQueryService {
 		return new GTE(beTrue, alias, expression);
 	}
 	
+	default <T> LTE lte(FieldPart field, Object value) {
+		return new LTE(field, value);
+	}
+	
+	default <T> LTE lte(boolean beTrue, FieldPart field, Object value) {
+		return new LTE(beTrue, field, value);
+	}
+
 	default <T> LTE lte(SFunction<T, ?> propertyFunction, Object value) {
 		return new LTE(propertyFunction, value);
 	}
@@ -390,12 +559,20 @@ public interface SQLQueryService {
 		return new LTE(propertyFunction, valueFunction);
 	}
 
+	default <T1> LTE lte(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new LTE(propertyFunction, sqlFunction);
+	}
+
 	default LTE lte(SQLFunction sqlFunction, Object value) {
 		return new LTE(sqlFunction, value);
 	}
 
 	default <T> LTE lte(SQLFunction sqlFunction, SFunction<T, ?> valueFunction) {
 		return new LTE(sqlFunction, valueFunction);
+	}
+
+	default <T1> LTE lte(SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new LTE(propertyFunction, expression);
 	}
 
 	default <T> LTE lte(boolean beTrue, SFunction<T, ?> propertyFunction, Object value) {
@@ -414,6 +591,14 @@ public interface SQLQueryService {
 		return new LTE(beTrue, sqlFunction, valueFunction);
 	}
 	
+	default <T1> LTE lte(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new LTE(beTrue, propertyFunction, sqlFunction);
+	}
+
+	default <T1> LTE lte(boolean beTrue, SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new LTE(beTrue, propertyFunction, expression);
+	}
+
 	default LTE lte(Alias alias1, Alias alias2) {
 		return new LTE(alias1, alias2);
 	}
@@ -438,6 +623,14 @@ public interface SQLQueryService {
 		return new LTE(beTrue, alias, expression);
 	}
 	
+	default <T> LT lt(FieldPart field, Object value) {
+		return new LT(field, value);
+	}
+	
+	default <T> LT lt(boolean beTrue, FieldPart field, Object value) {
+		return new LT(beTrue, field, value);
+	}
+
 	default <T> LT lt(SFunction<T, ?> propertyFunction, Object value) {
 		return new LT(propertyFunction, value);
 	}
@@ -446,12 +639,20 @@ public interface SQLQueryService {
 		return new LT(propertyFunction, valueFunction);
 	}
 
+	default <T1> LT lt(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new LT(propertyFunction, sqlFunction);
+	}
+
 	default LT lt(SQLFunction sqlFunction, Object value) {
 		return new LT(sqlFunction, value);
 	}
 
 	default <T> LT lt(SQLFunction sqlFunction, SFunction<T, ?> valueFunction) {
 		return new LT(sqlFunction, valueFunction);
+	}
+
+	default <T1> LT lt(SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new LT(propertyFunction, expression);
 	}
 
 	default <T> LT lt(boolean beTrue, SFunction<T, ?> propertyFunction, Object value) {
@@ -470,6 +671,14 @@ public interface SQLQueryService {
 		return new LT(beTrue, sqlFunction, valueFunction);
 	}
 	
+	default <T1> LT lt(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
+		return new LT(beTrue, propertyFunction, sqlFunction);
+	}
+
+	default <T1> LT lt(boolean beTrue, SFunction<T1, ?> propertyFunction, Expression expression) {
+		return new LT(beTrue, propertyFunction, expression);
+	}
+
 	default LT lt(Alias alias1, Alias alias2) {
 		return new LT(alias1, alias2);
 	}
@@ -501,7 +710,15 @@ public interface SQLQueryService {
 	default FalseCondition falseCondition() {
 		return new FalseCondition();
 	}
-
+	
+	default <T> BETWEEN between(FieldPart field, Object value1, Object value2) {
+		return new BETWEEN(field, value1, value2);
+	}
+	
+	default <T> BETWEEN between(boolean beTrue, FieldPart field, Object value1, Object value2) {
+		return new BETWEEN(beTrue, field, value1, value2);
+	}
+	
 	default <T> BETWEEN between(SFunction<T, ?> propertyFunction, Object value1, Object value2) {
 		return new BETWEEN(propertyFunction, value1, value2);
 	}
@@ -517,20 +734,36 @@ public interface SQLQueryService {
 	default BETWEEN between(boolean beTrue, Alias alias, Object value1, Object value2) {
 		return new BETWEEN(beTrue, alias, value1, value2);
 	}
+	
+	default <T> IN in(FieldPart field, Collection<?> value) {
+		return new IN(field, value);
+	}
+	
+	default <T> IN in(boolean beTrue, FieldPart field, Collection<?> value) {
+		return new IN(beTrue, field, value);
+	}
 
 	default <T> IN in(SFunction<T, ?> propertyFunction, Collection<?> value) {
 		return new IN(propertyFunction, value);
 	}
 
-	default <T> IN in(SFunction<?, ?> propertyFunction, SQLQuery query) {
+	default <T> IN in(SFunction<T, ?> propertyFunction, SQLQuery query) {
 		return new IN(propertyFunction, query);
+	}
+	
+	default <T> NOT_IN not_in(FieldPart field, Collection<?> value) {
+		return new NOT_IN(field, value);
+	}
+	
+	default <T> NOT_IN not_in(boolean beTrue, FieldPart field, Collection<?> value) {
+		return new NOT_IN(beTrue, field, value);
 	}
 
 	default <T> NOT_IN not_in(SFunction<T, ?> propertyFunction, Collection<?> value) {
 		return new NOT_IN(propertyFunction, value);
 	}
 
-	default <T> NOT_IN not_in(SFunction<?, ?> propertyFunction, SQLQuery query) {
+	default <T> NOT_IN not_in(SFunction<T, ?> propertyFunction, SQLQuery query) {
 		return new NOT_IN(propertyFunction, query);
 	}
 
@@ -538,7 +771,7 @@ public interface SQLQueryService {
 		return new IN(beTrue, propertyFunction, value);
 	}
 
-	default <T> IN in(boolean beTrue, SFunction<?, ?> propertyFunction, SQLQuery query) {
+	default <T> IN in(boolean beTrue, SFunction<T, ?> propertyFunction, SQLQuery query) {
 		return new IN(beTrue, propertyFunction, query);
 	}
 
@@ -546,7 +779,7 @@ public interface SQLQueryService {
 		return new NOT_IN(beTrue, propertyFunction, value);
 	}
 
-	default <T> NOT_IN not_in(boolean beTrue, SFunction<?, ?> propertyFunction, SQLQuery query) {
+	default <T> NOT_IN not_in(boolean beTrue, SFunction<T, ?> propertyFunction, SQLQuery query) {
 		return new NOT_IN(beTrue, propertyFunction, query);
 	}
 	
@@ -581,6 +814,14 @@ public interface SQLQueryService {
 	default NOT_IN not_in(boolean beTrue, Alias alias, SQLQuery query) {
 		return new NOT_IN(beTrue, alias, query);
 	}
+	
+	default <T> IS_NULL is_null(FieldPart field) {
+		return new IS_NULL(field);
+	}
+	
+	default <T> IS_NULL is_null(boolean beTrue, FieldPart field) {
+		return new IS_NULL(beTrue, field);
+	}
 
 	default <T> IS_NULL is_null(SFunction<T, ?> propertyFunction) {
 		return new IS_NULL(propertyFunction);
@@ -596,6 +837,14 @@ public interface SQLQueryService {
 	
 	default IS_NULL is_null(boolean beTrue, Alias alias) {
 		return new IS_NULL(beTrue, alias);
+	}
+	
+	default <T> NOT_NULL not_null(FieldPart field) {
+		return new NOT_NULL(field);
+	}
+	
+	default <T> NOT_NULL not_null(boolean beTrue, FieldPart field) {
+		return new NOT_NULL(beTrue, field);
 	}
 	
 	default NOT_NULL not_null(Alias alias) {
@@ -722,6 +971,10 @@ public interface SQLQueryService {
 		return new AS(fun, alias);
 	}
 
+	default AS as(FieldPart field, String alias) {
+		return new AS(field, alias);
+	}
+
 	default <T> AS as(SFunction<T, ?> fun, String alias) {
 		return new AS(fun, alias);
 	}
@@ -740,6 +993,10 @@ public interface SQLQueryService {
 
 	default <T> COUNT count(SFunction<T, ?> fun) {
 		return new COUNT(fun);
+	}
+	
+	default <T> COUNT count() {
+		return new COUNT();
 	}
 
 	default <T> COUNT count(String sql) {

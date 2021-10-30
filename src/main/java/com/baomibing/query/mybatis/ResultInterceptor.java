@@ -36,7 +36,7 @@ import com.baomibing.query.constant.ParameterConsts;
 import com.baomibing.query.constant.Strings;
 import com.baomidou.mybatisplus.core.toolkit.CollectionUtils;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
-import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
+//import com.baomidou.mybatisplus.extension.handlers.AbstractSqlParserHandler;
 import com.google.common.collect.ImmutableList;
 /**
  * Intercepter for handling result data
@@ -46,7 +46,7 @@ import com.google.common.collect.ImmutableList;
  */
 @Intercepts({ @Signature(type = Executor.class, method = "query", args = { MappedStatement.class, Object.class,
         RowBounds.class, ResultHandler.class }) })
-public class ResultInterceptor extends AbstractSqlParserHandler implements Interceptor {
+public class ResultInterceptor implements Interceptor {
 	
 	private final List<String> interceptorMethods = ImmutableList.of(SqlMethod.SELECT_FETCH.getMethod().toUpperCase(),SqlMethod.SELECT_FETCH_INTO.getMethod().toUpperCase());
 	

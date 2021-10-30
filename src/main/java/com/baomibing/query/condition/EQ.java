@@ -20,7 +20,9 @@ import com.baomibing.query.expression.Expression;
 import com.baomibing.query.helper.MyBatisPlusHelper;
 import com.baomibing.query.select.Alias;
 import com.baomibing.query.select.Field;
+import com.baomibing.query.select.FieldPart;
 import com.baomibing.query.select.SQLFunction;
+import com.baomibing.query.select.SelectablePart;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 
 /**
@@ -34,151 +36,95 @@ import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 public class EQ extends ACondition {
 
 	private boolean beValueFun = false;
+	
+	private EQ(boolean beTrue, SelectablePart field, Object value, boolean beValueFun) {
+		if (beTrue) {
+			this.selectablePart = field;
+			this.operator = Operator.EQ.getOp();
+			this.value = value;
+			this.beValueFun = beValueFun;
+		}
+		this.beTrue = beTrue;
+	}
 
+	public EQ(FieldPart field, Object value) {
+		this(true, field, value, true);
+	}
+	
+	public EQ(boolean beTrue, FieldPart field, Object value) {
+		this(beTrue, field, value ,true);
+	}
+	
 	public <T1> EQ(SFunction<T1, ?> propertyFunction, Object value) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.EQ.getOp();
-		this.value = value;
+		this(true, new Field<>(propertyFunction), value);
 	}
 
 	public <T1, T2> EQ(SFunction<T1, ?> propertyFunction, SFunction<T2, ?> valueFunction) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.EQ.getOp();
-		this.value = MyBatisPlusHelper.columnToString(valueFunction);
-		this.beValueFun = true;
+		this(true, new Field<>(propertyFunction), MyBatisPlusHelper.columnToString(valueFunction), false);
 	}
 	
 	public <T1, T2> EQ(SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.EQ.getOp();
-		this.value = sqlFunction;
-		this.beValueFun = true;
+		this(true, new Field<>(propertyFunction), sqlFunction, true);
 	}
 
 	public <T1> EQ(SQLFunction sqlFunction, Object value) {
-		this.selectablePart = sqlFunction;
-		this.operator = Operator.EQ.getOp();
-		this.value = value;
+		this(true, sqlFunction, value, true);
 	}
 
 	public <T1> EQ(SQLFunction sqlFunction, SFunction<T1, ?> valueFunction) {
-		this.selectablePart = sqlFunction;
-		this.operator = Operator.EQ.getOp();
-		this.value = MyBatisPlusHelper.columnToString(valueFunction);
-		this.beValueFun = true;
+		this(true, sqlFunction, MyBatisPlusHelper.columnToString(valueFunction), false);
 	}
 	
 	public <T1> EQ(SFunction<T1, ?> propertyFunction, Expression expression) {
-		this.selectablePart = new Field<>(propertyFunction);
-		this.operator = Operator.EQ.getOp();
-		this.value = expression;
-		this.beValueFun = true;
+		this(true, new Field<>(propertyFunction), expression, true);
 	}
 	
 	public EQ(Alias alias1, Alias alias2) {
-		this.selectablePart = alias1;
-		this.operator = Operator.EQ.getOp();
-		this.value = alias2;
-		this.beValueFun = true;
+		this(true, alias1, alias2, true);
 	}
 	
 	public EQ(Alias alias, Object value) {
-		this.selectablePart = alias;
-		this.operator = Operator.EQ.getOp();
-		this.value = value;
+		this(true, alias, value, true);
 	}
 	
 	public EQ(Alias alias, Expression expression) {
-		this.selectablePart = alias;
-		this.operator = Operator.EQ.getOp();
-		this.value = expression;
-		this.beValueFun = true;
+		this(true, alias, expression, true);
 	}
 	
 	public EQ(boolean beTrue, Alias alias1, Alias alias2) {
-    if (beTrue) {
-      this.selectablePart = alias1;
-      this.operator = Operator.EQ.getOp();
-      this.value = alias2;
-      this.beValueFun = true;
-		}
-    this.beTrue = beTrue;
+		this(beTrue, alias1, alias2, true);
 	}
 	
 	public EQ(boolean beTrue, Alias alias, Object value) {
-    if (beTrue) {
-      this.selectablePart = alias;
-      this.operator = Operator.EQ.getOp();
-      this.value = value;
-		}
-    this.beTrue = beTrue;
+		this(beTrue, alias, value, true);
 	}
 	
 	public EQ(boolean beTrue, Alias alias, Expression expression) {
-    if (beTrue) {
-      this.selectablePart = alias;
-      this.operator = Operator.EQ.getOp();
-      this.value = expression;
-      this.beValueFun = true;
-		}
-    this.beTrue = beTrue;
+		this(beTrue, alias, expression, true);
 	}
 
 	public <T1> EQ(boolean beTrue, SFunction<T1, ?> propertyFunction, Object value) {
-		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
-			this.operator = Operator.EQ.getOp();
-			this.value = value;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, new Field<>(propertyFunction), value, true);
 	}
 
 	public <T1, T2> EQ(boolean beTrue, SFunction<T1, ?> propertyFunction, SFunction<T2, ?> valueFunction) {
-		if (beTrue) {
-			this.selectablePart = new Field<>(propertyFunction);
-			this.operator = Operator.EQ.getOp();
-			this.value = MyBatisPlusHelper.columnToString(valueFunction);
-			this.beValueFun = true;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, new Field<>(propertyFunction), MyBatisPlusHelper.columnToString(valueFunction), false);
 	}
 	
 	public <T1, T2> EQ(boolean beTrue, SFunction<T1, ?> propertyFunction, SQLFunction sqlFunction) {
-    if (beTrue) {
-      this.selectablePart = new Field<>(propertyFunction);
-      this.operator = Operator.EQ.getOp();
-      this.value = sqlFunction;
-      this.beValueFun = true;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, new Field<>(propertyFunction), sqlFunction, true);
 	}
 
 	public <T1> EQ(boolean beTrue, SQLFunction sqlFunction, Object value) {
-		if (beTrue) {
-			this.selectablePart = sqlFunction;
-			this.operator = Operator.EQ.getOp();
-			this.value = value;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, sqlFunction, value, true);
 	}
 
 	public <T1> EQ(boolean beTrue, SQLFunction sqlFunction, SFunction<T1, ?> valueFunction) {
-		if (beTrue) {
-			this.selectablePart = sqlFunction;
-			this.operator = Operator.EQ.getOp();
-			this.value = MyBatisPlusHelper.columnToString(valueFunction);
-			this.beValueFun = true;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, sqlFunction, MyBatisPlusHelper.columnToString(valueFunction), false);
 	}
 	
 	public <T1> EQ(boolean beTrue, SFunction<T1, ?> propertyFunction, Expression expression) {
-    if (beTrue) {
-      this.selectablePart = new Field<>(propertyFunction);
-      this.operator = Operator.EQ.getOp();
-      this.value = expression;
-		}
-		this.beTrue = beTrue;
+		this(beTrue, new Field<>(propertyFunction), expression, true);
 	}
 
 	@Override
@@ -187,7 +133,7 @@ public class EQ extends ACondition {
 			return Strings.EMPTY;
 		}
 		StringBuilder s = new StringBuilder();
-		s.append(selectablePart.toSQL()).append(OP_EQUAL).append(beValueFun ? value : displayValue(value));
+		s.append(selectablePart.toSQL()).append(OP_EQUAL).append(beValueFun ?  displayValue(value) : value);
 		return s.toString();
 	}
 

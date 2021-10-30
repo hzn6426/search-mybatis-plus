@@ -15,16 +15,15 @@
  */
 package com.baomibing.query.select;
 
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.baomibing.query.QueryPart;
 import com.baomibing.query.constant.SQLConsts;
 import com.baomibing.query.helper.InnerHelper;
 import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 import com.google.common.collect.Lists;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+import java.util.stream.Collectors;
 /**
  * SQL count function
  * 
@@ -45,6 +44,8 @@ public class COUNT extends SQLFunction {
 		this(new QueryPart[] {distinct});
 	}
 
+	public COUNT() {}
+	
 	public <T1> COUNT(SFunction<T1, ?> fun) {
 
 		this(new Field<>(fun));
@@ -63,6 +64,8 @@ public class COUNT extends SQLFunction {
 	
 
 	public String toSQL() {
-		return InnerHelper.format(SQLConsts.FUN_COUNT, StringUtils.isNotBlank(sql) ? sql : this.fields.stream().map(f -> f.toSQL()).collect(Collectors.joining(",")));
+		boolean beFieldEmpty = fields == null || fields.isEmpty();
+		return InnerHelper.format(SQLConsts.FUN_COUNT, StringUtils.isNotBlank(sql) ? sql
+			: beFieldEmpty ? 1 : this.fields.stream().map(f -> f.toSQL()).collect(Collectors.joining(",")));
 	}
 }

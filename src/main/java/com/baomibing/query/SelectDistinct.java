@@ -15,12 +15,11 @@
  */
 package com.baomibing.query;
 
-import com.baomibing.query.constant.SQLConsts;
-import com.baomibing.query.select.Alias;
-import com.baomibing.query.select.SQLFunction;
-import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
-
 import java.util.stream.Collectors;
+
+import com.baomibing.query.constant.SQLConsts;
+import com.baomibing.query.select.SelectablePart;
+import com.baomidou.mybatisplus.core.toolkit.support.SFunction;
 /**
  * SQL select distinct part
  * 
@@ -29,132 +28,136 @@ import java.util.stream.Collectors;
  */
 public class SelectDistinct extends Select {
 	
-	public SelectDistinct(Alias... aliases) {
-		super(aliases);
+//	public SelectDistinct(Alias... aliases) {
+//		super(aliases);
+//	}
+//
+//	public SelectDistinct(SelectablePart... SelectableParts) {
+//		super(SelectableParts);
+//	}
+
+	public SelectDistinct(SelectablePart... selectableParts) {
+		super(selectableParts);
 	}
 
-	public SelectDistinct(SQLFunction... sqlFunctions) {
-		super(sqlFunctions);
+	public <T1> SelectDistinct(SFunction<T1, ?> fun, SelectablePart... SelectableParts) {
+
+		super(fun, SelectableParts);
 	}
 
-	public <T1> SelectDistinct(SFunction<T1, ?> fun, SQLFunction...sqlFunctions) {
+	public <T1, T2> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SelectablePart... SelectableParts) {
 
-		super(fun,sqlFunctions);
+		super(fun1, fun2, SelectableParts);
 	}
 
-	public <T1, T2> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SQLFunction...sqlFunctions) {
+	public <T1, T2, T3> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,sqlFunctions);
-	}
-
-	public <T1, T2, T3> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SQLFunction...sqlFunctions) {
-
-		super(fun1,fun2,fun3,sqlFunctions);
+		super(fun1, fun2, fun3, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
-			SFunction<T4, ?> fun4, SQLFunction...sqlFunctions) {
+			SFunction<T4, ?> fun4, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
-			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SQLFunction...sqlFunctions) {
+			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
-			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SQLFunction...sqlFunctions) {
+			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2, SFunction<T3, ?> fun3,
-			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SQLFunction...sqlFunctions) {
+			SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6,
-			SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SQLFunction...sqlFunctions) {
+			SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6,
-			SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SQLFunction...sqlFunctions) {
+			SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6,
-			SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SQLFunction...sqlFunctions) {
+			SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6,
 			SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
-			SFunction<T11, ?> fun11, SQLFunction...sqlFunctions) {
+			SFunction<T11, ?> fun11, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12> SelectDistinct(SFunction<T1, ?> fun1, SFunction<T2, ?> fun2,
 			SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5, SFunction<T6, ?> fun6,
 			SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9, SFunction<T10, ?> fun10,
-			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SQLFunction...sqlFunctions) {
+			SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13> SelectDistinct(SFunction<T1, ?> fun1,
 			SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
 			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
-			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SQLFunction...sqlFunctions) {
+			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14> SelectDistinct(SFunction<T1, ?> fun1,
 			SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
 			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13,
-			SFunction<T14, ?> fun14, SQLFunction...sqlFunctions) {
+			SFunction<T14, ?> fun14, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15> SelectDistinct(SFunction<T1, ?> fun1,
 			SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
 			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13,
-			SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SQLFunction...sqlFunctions) {
+			SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16> SelectDistinct(SFunction<T1, ?> fun1,
 			SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
 			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13,
-			SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16, SQLFunction...sqlFunctions) {
+			SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17> SelectDistinct(SFunction<T1, ?> fun1,
 			SFunction<T2, ?> fun2, SFunction<T3, ?> fun3, SFunction<T4, ?> fun4, SFunction<T5, ?> fun5,
 			SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8, SFunction<T9, ?> fun9,
 			SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12, SFunction<T13, ?> fun13,
-			SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SQLFunction...sqlFunctions) {
+			SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16, SFunction<T17, ?> fun17, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,fun17,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18> SelectDistinct(
@@ -162,9 +165,9 @@ public class SelectDistinct extends Select {
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8,
 			SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12,
 			SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
-			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SQLFunction...sqlFunctions) {
+			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,fun17,fun18,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19> SelectDistinct(
@@ -172,9 +175,9 @@ public class SelectDistinct extends Select {
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8,
 			SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12,
 			SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
-			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SQLFunction...sqlFunctions) {
+			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,fun17,fun18,fun19,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20> SelectDistinct(
@@ -182,9 +185,9 @@ public class SelectDistinct extends Select {
 			SFunction<T5, ?> fun5, SFunction<T6, ?> fun6, SFunction<T7, ?> fun7, SFunction<T8, ?> fun8,
 			SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12,
 			SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
-			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SQLFunction...sqlFunctions) {
+			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,fun17,fun18,fun19,fun20,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21> SelectDistinct(
@@ -193,9 +196,9 @@ public class SelectDistinct extends Select {
 			SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12,
 			SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
 			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20,
-			SFunction<T21, ?> fun21, SQLFunction...sqlFunctions) {
+			SFunction<T21, ?> fun21, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,fun17,fun18,fun19,fun20,fun21,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20, fun21, SelectableParts);
 	}
 
 	public <T1, T2, T3, T4, T5, T6, T7, T8, T9, T10, T11, T12, T13, T14, T15, T16, T17, T18, T19, T20, T21, T22> SelectDistinct(
@@ -204,9 +207,9 @@ public class SelectDistinct extends Select {
 			SFunction<T9, ?> fun9, SFunction<T10, ?> fun10, SFunction<T11, ?> fun11, SFunction<T12, ?> fun12,
 			SFunction<T13, ?> fun13, SFunction<T14, ?> fun14, SFunction<T15, ?> fun15, SFunction<T16, ?> fun16,
 			SFunction<T17, ?> fun17, SFunction<T18, ?> fun18, SFunction<T19, ?> fun19, SFunction<T20, ?> fun20,
-			SFunction<T21, ?> fun21, SFunction<T22, ?> fun22, SQLFunction...sqlFunctions) {
+			SFunction<T21, ?> fun21, SFunction<T22, ?> fun22, SelectablePart... SelectableParts) {
 
-		super(fun1,fun2,fun3,fun4,fun5,fun6,fun7,fun8,fun9,fun10,fun11,fun12,fun13,fun14,fun15,fun16,fun17,fun18,fun19,fun20,fun21,fun22,sqlFunctions);
+		super(fun1, fun2, fun3, fun4, fun5, fun6, fun7, fun8, fun9, fun10, fun11, fun12, fun13, fun14, fun15, fun16, fun17, fun18, fun19, fun20, fun21, fun22, SelectableParts);
 	}
 
 
@@ -219,6 +222,7 @@ public class SelectDistinct extends Select {
 //		}
 //	}
 
+	@Override
 	public String toSQL() {
 		return SQLConsts.SQL_DISTINCT + this.selectableParts.stream().map(f -> f.toSQL()).collect(Collectors.joining(","));
 	}
